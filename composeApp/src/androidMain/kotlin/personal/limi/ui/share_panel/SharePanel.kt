@@ -76,11 +76,12 @@ fun SharePanel(onActivityClose: () -> Unit = {}) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp),
+                    onClick = { Unit },
                 ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp),
+                            .padding(12.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
@@ -101,7 +102,8 @@ fun SharePanel(onActivityClose: () -> Unit = {}) {
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 16.dp),
+                        .padding(bottom = 12.dp),
+                    onClick = { Unit },
                 ) {
                     Column(
                         modifier = Modifier
@@ -128,7 +130,7 @@ fun SharePanel(onActivityClose: () -> Unit = {}) {
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = 8.dp),
-                        onClick = { },
+                        onClick = { Unit },
                         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                     ) {
                         Icon(
@@ -145,7 +147,7 @@ fun SharePanel(onActivityClose: () -> Unit = {}) {
                         modifier = Modifier
                             .weight(1f)
                             .padding(start = 8.dp),
-                        onClick = { },
+                        onClick = { Unit },
                         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                     ) {
                         Icon(
