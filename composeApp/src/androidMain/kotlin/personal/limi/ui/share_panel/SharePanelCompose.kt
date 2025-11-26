@@ -1,5 +1,6 @@
 package personal.limi.ui.share_panel
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,8 +15,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -33,12 +36,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import personal.limi.R
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 @Preview
-fun SharePanel(onActivityClose: () -> Unit = {}) {
+fun SharePanel(
+    viewModel: SharePanelViewModel = viewModel(), onActivityClose: () -> Unit = {}
+) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(true) }
@@ -105,20 +111,32 @@ fun SharePanel(onActivityClose: () -> Unit = {}) {
                         .padding(bottom = 12.dp),
                     onClick = { Unit },
                 ) {
-                    Column(
+                    if (viewModel.isProcessing) Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) { LoadingIndicator() } else Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp),
                     ) {
-                        Text(
-                            text = stringResource(R.string.processing_results),
-                            style = MaterialTheme.typography.labelMedium,
-                            modifier = Modifier.padding(bottom = 4.dp),
-                        )
-                        Text(
-                            text = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
+                        if (!viewModel.isProcessing && !viewModel.isEmpty) {
+                            Text(
+                                text = stringResource(R.string.processing_results),
+                                style = MaterialTheme.typography.labelMedium,
+                                modifier = Modifier.padding(bottom = 4.dp),
+                            )
+                            Text(
+                                text = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier,
+                            )
+                        } else if (viewModel.isEmpty) Text(
+                            text = stringResource(R.string.input_string_is_empty),
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Center
                         )
                     }
                 }
@@ -131,6 +149,7 @@ fun SharePanel(onActivityClose: () -> Unit = {}) {
                             .weight(1f)
                             .padding(end = 8.dp),
                         onClick = { Unit },
+                        enabled = (!viewModel.isEmpty&&!viewModel.isProcessing),
                         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                     ) {
                         Icon(
@@ -148,6 +167,7 @@ fun SharePanel(onActivityClose: () -> Unit = {}) {
                             .weight(1f)
                             .padding(start = 8.dp),
                         onClick = { Unit },
+                        enabled = (!viewModel.isEmpty&&!viewModel.isProcessing),
                         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                     ) {
                         Icon(

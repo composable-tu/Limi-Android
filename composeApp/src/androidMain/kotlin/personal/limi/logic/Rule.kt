@@ -6,9 +6,9 @@ import personal.limi.logic.rules.processBilibiliUrl
 
 suspend fun processUrl(urlString: String): String {
     val url = Url(urlString)
-    var finalUrl = ""
+    var finalUrl: String? = null
     when {
         url.host.lowercase() in bilibiliTargetHost -> finalUrl = processBilibiliUrl(url)
     }
-    return finalUrl.ifEmpty { urlString }
+    return finalUrl?.ifEmpty { urlString } ?: urlString
 }

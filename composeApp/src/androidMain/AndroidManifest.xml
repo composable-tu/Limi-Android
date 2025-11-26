@@ -20,7 +20,14 @@
         <activity
             android:name=".ui.share_panel.SharePanelActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:exported="true" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

@@ -4,4 +4,5 @@
     <string name="processing_results">处理结果</string>
     <string name="copy">复制</string>
     <string name="share">分享</string>
+    <string name="input_string_is_empty">传入的字符串为空</string>
 </resources>
