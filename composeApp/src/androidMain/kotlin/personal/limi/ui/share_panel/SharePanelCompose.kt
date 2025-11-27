@@ -32,6 +32,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,6 +49,7 @@ fun SharePanel(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     rememberCoroutineScope()
     var showBottomSheet by remember { mutableStateOf(true) }
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         showBottomSheet = true
@@ -148,8 +150,8 @@ fun SharePanel(
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = 8.dp),
-                        onClick = { Unit },
-                        enabled = (!viewModel.isEmpty && !viewModel.isProcessing),
+                        onClick = { viewModel.shareText(context) },
+                        enabled = (!viewModel.isEmpty && !viewModel.isProcessing && !viewModel.isNotHasUrls),
                         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                     ) {
                         Icon(
@@ -166,8 +168,8 @@ fun SharePanel(
                         modifier = Modifier
                             .weight(1f)
                             .padding(start = 8.dp),
-                        onClick = { Unit },
-                        enabled = (!viewModel.isEmpty && !viewModel.isProcessing),
+                        onClick = { viewModel.copyText(context) },
+                        enabled = (!viewModel.isEmpty && !viewModel.isProcessing && !viewModel.isNotHasUrls),
                         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                     ) {
                         Icon(

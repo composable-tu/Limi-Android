@@ -31,6 +31,8 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.cio)
+            implementation("androidx.datastore:datastore:1.2.0")
+            implementation("androidx.datastore:datastore-preferences:1.2.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
