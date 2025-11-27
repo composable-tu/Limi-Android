@@ -6,4 +6,5 @@
     <string name="copy">Copy</string>
     <string name="share">Share</string>
     <string name="input_string_is_empty">The input string is empty.</string>
+    <string name="copied">Copied!</string>
 </resources>

@@ -1,5 +1,7 @@
 package personal.limi.ui.share_panel
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,8 +16,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import personal.limi.logic.processUrl
-import personal.limi.logic.rules.bilibili.UnsupportedURLException
 import personal.limi.utils.extractUrlList
+import personal.limi.utils.textCopyThenPost
+import personal.limi.utils.textShare
 
 class SharePanelViewModel : ViewModel() {
     var isProcessing by mutableStateOf(false)
@@ -30,12 +33,38 @@ class SharePanelViewModel : ViewModel() {
     var isEmpty by mutableStateOf(false)
         private set
 
+    var isNotHasUrls by mutableStateOf(false)
+        private set
+
     var isError by mutableStateOf(false)
         private set
 
+    /**
+     * 初始化并开始处理文本
+     * @param text 要处理的文本
+     */
     fun initializeWithText(text: String?) {
         originalText = text
         processText(text)
+    }
+
+    /**
+     * 复制处理后的文本
+     */
+    fun copyText(context: Context) {
+        if (processedText.isNullOrBlank()) return
+
+        textCopyThenPost(processedText ?: "", context)
+    }
+
+    /**
+     * 分享处理后的文本
+     *
+     * @param withAndroidSharesheet 是否使用 Android Sharesheet 分享面板
+     */
+    fun shareText(context: Context, withAndroidSharesheet: Boolean = true) {
+        if (processedText.isNullOrBlank()) return
+        textShare(processedText ?: "", context, withAndroidSharesheet)
     }
 
     private fun processText(text: String?) {
@@ -46,7 +75,9 @@ class SharePanelViewModel : ViewModel() {
         }
 
         isProcessing = true
+        isEmpty = false
         isError = false
+        isNotHasUrls = false
 
         val exceptionHandler = CoroutineExceptionHandler { _, exception ->
             viewModelScope.launch(Dispatchers.Main) {
@@ -59,7 +90,10 @@ class SharePanelViewModel : ViewModel() {
         viewModelScope.launch(exceptionHandler) {
             try {
                 val urls = extractUrlList(text)
-                if (urls.isEmpty()) processedText = "未找到链接" else {
+                if (urls.isEmpty()) {
+                    processedText = "未找到链接"
+                    isNotHasUrls = true
+                } else {
                     val semaphore = Semaphore(5)
 
                     val tasks = urls.map { url ->
