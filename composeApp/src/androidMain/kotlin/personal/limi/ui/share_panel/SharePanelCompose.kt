@@ -128,7 +128,7 @@ fun SharePanel(
                                 modifier = Modifier.padding(bottom = 4.dp),
                             )
                             Text(
-                                text = "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest",
+                                text = viewModel.processedText ?: "",
                                 style = MaterialTheme.typography.bodyMedium,
                                 modifier = Modifier,
                             )
@@ -149,7 +149,7 @@ fun SharePanel(
                             .weight(1f)
                             .padding(end = 8.dp),
                         onClick = { Unit },
-                        enabled = (!viewModel.isEmpty&&!viewModel.isProcessing),
+                        enabled = (!viewModel.isEmpty && !viewModel.isProcessing),
                         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                     ) {
                         Icon(
@@ -167,7 +167,7 @@ fun SharePanel(
                             .weight(1f)
                             .padding(start = 8.dp),
                         onClick = { Unit },
-                        enabled = (!viewModel.isEmpty&&!viewModel.isProcessing),
+                        enabled = (!viewModel.isEmpty && !viewModel.isProcessing),
                         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                     ) {
                         Icon(

@@ -5,7 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
+import personal.limi.logic.processUrl
 import personal.limi.utils.extractUrlList
 
 class SharePanelViewModel: ViewModel() {
@@ -15,7 +20,7 @@ class SharePanelViewModel: ViewModel() {
     var processedText by mutableStateOf<String?>(null)
         private set
 
-    var isInitialized by mutableStateOf(false)
+    var originalText by mutableStateOf<String?>("")
         private set
 
     var isEmpty by mutableStateOf(false)
@@ -24,12 +29,13 @@ class SharePanelViewModel: ViewModel() {
     var isError by mutableStateOf(false)
         private set
 
-    fun initializeWithText(text: String) {
+    fun initializeWithText(text: String?) {
+        originalText = text
         processText(text)
     }
 
-    private fun processText(text: String) {
-        if (text.isBlank()) {
+    private fun processText(text: String?) {
+        if (text.isNullOrBlank()) {
             processedText = ""
             isEmpty = true
             return
@@ -39,13 +45,29 @@ class SharePanelViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val urls = extractUrlList(text)
-                processedText = if (urls.isEmpty()) {
-                    "未找到链接"
-                } else {
-                    urls.joinToString("\n")
+                if (urls.isEmpty()) processedText = "未找到链接" else {
+                    val semaphore = Semaphore(5)
+
+                    val tasks = urls.map { url ->
+                        async {
+                            semaphore.withPermit {
+                                val processedResult = processUrl(url)
+                                url to processedResult
+                            }
+                        }
+                    }
+
+                    val processedUrls = awaitAll(*tasks.toTypedArray()).toMap()
+
+                    var resultText = text
+                    if (processedUrls.isNotEmpty()) processedUrls.forEach { (originalUrl, processedUrl) ->
+                        resultText = resultText?.replace(originalUrl, processedUrl)
+                    }
+                    processedText = resultText
                 }
             } catch (e: Exception) {
                 processedText = "处理出错: ${e.message}"
+                isError = true
             } finally {
                 isProcessing = false
             }
