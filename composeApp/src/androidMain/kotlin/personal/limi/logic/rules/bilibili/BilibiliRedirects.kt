@@ -11,7 +11,7 @@ val bilibiliRedirectTargetHost = arrayOf("b23.tv")
 // 最终允许的 Host
 private val bilibiliRedirectAllowedHost = arrayOf("www.bilibili.com", "bilibili.com", "m.bilibili.com")
 
-suspend fun processBilibiliRedirectUrl(url: Url): String {
+suspend fun processBilibiliRedirectUrl(url: Url): Url {
     if (url.host.lowercase() !in bilibiliRedirectTargetHost) throw UnsupportedURLException("与 bilibiliRedirectTargetHost 链接不匹配")
     val redirectsUrl = getRedirectsUrl(url)
     if (redirectsUrl.host.lowercase() !in bilibiliRedirectAllowedHost) throw UnsupportedURLException(
