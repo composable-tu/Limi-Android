@@ -1,5 +1,6 @@
 package personal.limi.ui.share_panel
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.getValue
@@ -20,11 +21,15 @@ import personal.limi.utils.extractUrlList
 import personal.limi.utils.textCopyThenPost
 import personal.limi.utils.textShare
 
+@SuppressLint("MutableCollectionMutableState")
 class SharePanelViewModel : ViewModel() {
     var isProcessing by mutableStateOf(false)
         private set
 
     var processedText by mutableStateOf<String?>(null)
+        private set
+
+    var processedUrlList by mutableStateOf<MutableList<String>>(mutableListOf())
         private set
 
     var originalText by mutableStateOf<String?>("")
@@ -74,6 +79,8 @@ class SharePanelViewModel : ViewModel() {
             return
         }
 
+        processedText = ""
+        processedUrlList = mutableListOf()
         isProcessing = true
         isEmpty = false
         isError = false
@@ -110,6 +117,7 @@ class SharePanelViewModel : ViewModel() {
                     var resultText = text
                     if (processedUrls.isNotEmpty()) processedUrls.forEach { (originalUrl, processedUrl) ->
                         resultText = resultText?.replace(originalUrl, processedUrl)
+                        processedUrlList += processedUrl
                     }
                     processedText = resultText
                 }

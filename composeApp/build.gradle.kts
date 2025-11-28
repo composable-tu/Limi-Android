@@ -16,23 +16,23 @@ kotlin {
     
     sourceSets {
         androidMain.dependencies {
-            implementation("org.jetbrains.compose.ui:ui-tooling-preview:1.10.0-beta02")
+            implementation(libs.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
-            implementation("org.jetbrains.compose.runtime:runtime:1.10.0-beta02")
-            implementation("org.jetbrains.compose.foundation:foundation:1.10.0-beta02")
-            implementation("org.jetbrains.compose.material3:material3:1.10.0-alpha05")
-            implementation("org.jetbrains.compose.material:material-icons-extended:1.7.3")
-            implementation("org.jetbrains.compose.ui:ui:1.10.0-beta02")
-            implementation("org.jetbrains.compose.components:components-resources:1.10.0-beta02")
-            implementation("org.jetbrains.compose.ui:ui-tooling-preview:1.10.0-beta02")
+            implementation(libs.runtime)
+            implementation(libs.foundation)
+            implementation(libs.material3)
+            implementation(libs.material.icons.extended)
+            implementation(libs.ui)
+            implementation(libs.components.resources)
+            implementation(libs.ui.tooling.preview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.cio)
-            implementation("androidx.datastore:datastore:1.2.0")
-            implementation("androidx.datastore:datastore-preferences:1.2.0")
+            implementation(libs.androidx.datastore)
+            implementation(libs.androidx.datastore.preferences)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -58,7 +58,7 @@ android {
     }
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
         }
     }
     compileOptions {
@@ -68,6 +68,6 @@ android {
 }
 
 dependencies {
-    debugImplementation("org.jetbrains.compose.ui:ui-tooling:1.10.0-beta02")
+    debugImplementation(libs.ui.tooling)
 }
 
