@@ -25,7 +25,7 @@ class SharePanelActivity : ComponentActivity() {
             ) {
                 LimiTheme {
                     val viewModel: SharePanelViewModel = viewModel()
-                    viewModel.initializeWithText(sharedText)
+                    viewModel.initializeWithText(this@SharePanelActivity, sharedText)
                     SharePanel(viewModel, onActivityClose = { finish() })
                 }
             }

@@ -6,4 +6,6 @@
     <string name="share">分享</string>
     <string name="input_string_is_empty">传入的字符串为空</string>
     <string name="copied">已复制</string>
+    <string name="no_links_found">未找到链接</string>
+    <string name="processing_error">处理出错：%1$s</string>
 </resources>
