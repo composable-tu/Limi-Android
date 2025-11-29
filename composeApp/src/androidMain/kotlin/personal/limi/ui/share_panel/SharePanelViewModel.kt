@@ -2,7 +2,6 @@ package personal.limi.ui.share_panel
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -16,6 +15,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
+import personal.limi.R
 import personal.limi.logic.processUrl
 import personal.limi.utils.extractUrlList
 import personal.limi.utils.textCopyThenPost
@@ -48,9 +48,9 @@ class SharePanelViewModel : ViewModel() {
      * 初始化并开始处理文本
      * @param text 要处理的文本
      */
-    fun initializeWithText(text: String?) {
+    fun initializeWithText(context: Context, text: String?) {
         originalText = text
-        processText(text)
+        context.processText(text)
     }
 
     /**
@@ -59,7 +59,7 @@ class SharePanelViewModel : ViewModel() {
     fun copyText(context: Context) {
         if (processedText.isNullOrBlank()) return
 
-        textCopyThenPost(processedText ?: "", context)
+        context.textCopyThenPost(processedText ?: "")
     }
 
     /**
@@ -69,10 +69,10 @@ class SharePanelViewModel : ViewModel() {
      */
     fun shareText(context: Context, withAndroidSharesheet: Boolean = true) {
         if (processedText.isNullOrBlank()) return
-        textShare(processedText ?: "", context, withAndroidSharesheet)
+        context.textShare(processedText ?: "", withAndroidSharesheet)
     }
 
-    private fun processText(text: String?) {
+    private fun Context.processText(text: String?) {
         if (text.isNullOrBlank()) {
             processedText = ""
             isEmpty = true
@@ -86,11 +86,11 @@ class SharePanelViewModel : ViewModel() {
         isError = false
         isNotHasUrls = false
 
-        val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+        val exceptionHandler = CoroutineExceptionHandler { _, e ->
             viewModelScope.launch(Dispatchers.Main) {
                 isProcessing = false
                 isError = true
-                processedText = "处理出错: ${exception.message ?: "未知错误"}"
+                processedText = getString(R.string.processing_error, e.message)
             }
         }
 
@@ -98,7 +98,7 @@ class SharePanelViewModel : ViewModel() {
             try {
                 val urls = extractUrlList(text)
                 if (urls.isEmpty()) {
-                    processedText = "未找到链接"
+                    processedText = getString(R.string.no_links_found)
                     isNotHasUrls = true
                 } else {
                     val semaphore = Semaphore(5)
@@ -126,7 +126,7 @@ class SharePanelViewModel : ViewModel() {
                 // 捕获 CancellationException 是为了避免它被下面的 Exception 捕获，并在 isError 状态中设置不正确的值。
                 throw e
             } catch (e: Exception) {
-                processedText = "处理出错: ${e.message}"
+                processedText = getString(R.string.processing_error, e.message)
                 isError = true
             } finally {
                 isProcessing = false

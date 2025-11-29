@@ -165,7 +165,7 @@ fun SharePanel(
                             ),
                             modifier = Modifier.padding(start = 8.dp, end = 8.dp),
                             onClick = {
-                                textCopyThenPost(url, context)
+                                context.textCopyThenPost(url)
                             },
                         ) {
                             Row(
@@ -197,7 +197,7 @@ fun SharePanel(
                             ),
                             modifier = Modifier.padding(start = 8.dp, end = 8.dp),
                             onClick = {
-                                textCopyThenPost(viewModel.processedUrlList.first(), context)
+                                context.textCopyThenPost(viewModel.processedUrlList.first())
                             },
                         ) {
                             Row(
@@ -234,7 +234,7 @@ fun SharePanel(
                             .weight(1f)
                             .padding(end = 8.dp),
                         onClick = { viewModel.shareText(context) },
-                        enabled = (!viewModel.isEmpty && !viewModel.isProcessing && !viewModel.isNotHasUrls),
+                        enabled = isButtonEnabled(viewModel),
                         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                     ) {
                         Icon(
@@ -252,7 +252,7 @@ fun SharePanel(
                             .weight(1f)
                             .padding(start = 8.dp),
                         onClick = { viewModel.copyText(context) },
-                        enabled = (!viewModel.isEmpty && !viewModel.isProcessing && !viewModel.isNotHasUrls),
+                        enabled = isButtonEnabled(viewModel),
                         contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                     ) {
                         Icon(
@@ -269,4 +269,9 @@ fun SharePanel(
             }
         }
     }
+}
+
+@Composable
+private fun isButtonEnabled(viewModel: SharePanelViewModel): Boolean {
+    return !viewModel.isEmpty && !viewModel.isProcessing && !viewModel.isNotHasUrls && !viewModel.isError
 }

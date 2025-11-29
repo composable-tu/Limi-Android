@@ -7,4 +7,6 @@
     <string name="share">Share</string>
     <string name="input_string_is_empty">The input string is empty.</string>
     <string name="copied">Copied!</string>
+    <string name="no_links_found">No links found.</string>
+    <string name="processing_error">Processing error: %1$s</string>
 </resources>
