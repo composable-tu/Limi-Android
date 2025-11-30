@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="limi_icon_launcher_foreground">@android:color/system_on_primary_container_light
+    </color>
+    <color name="limi_icon_launcher_background">@android:color/system_primary_container_light
+    </color>
+</resources>

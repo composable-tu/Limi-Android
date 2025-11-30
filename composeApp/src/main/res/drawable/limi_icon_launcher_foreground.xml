@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="1164.9"
+    android:viewportHeight="707.2">
+    <group
+        android:scaleX="0.39722222"
+        android:scaleY="0.24114993"
+        android:translateX="351.08792"
+        android:translateY="268.32938">
+        <path
+            android:fillColor="@color/limi_icon_launcher_foreground"
+            android:fillType="evenOdd"
+            android:pathData="M300,707.1L441.2,565.9L582.4,707.2L582.4,707.2L582.4,707.2L723.7,565.9L864.9,707.1L864.9,707.1L864.9,707.1L1164.9,707.1L1164.9,607.1L906.3,607.1L794.4,495.2L936,353.7L935.9,353.6L936,353.6L794.4,212L906.3,100.1L1164.9,100.1L1164.9,0.1L864.9,0.1L864.9,0.1L864.9,0.1L723.7,141.3L582.4,0L582.4,0L582.4,0L441.2,141.3L300,0.1L300,0.1L300,0.1L0,0.1L0,100.1L258.6,100.1L370.5,212L228.9,353.6L228.9,353.6L228.9,353.7L370.5,495.2L258.6,607.1L0,607.1L0,707.1L300,707.1L300,707.1L300,707.1L300,707.1ZM370.5,353.8L582.4,141.8L794.4,353.8L582.4,565.8L370.5,353.8L370.5,353.8Z" />
+    </group>
+</vector>
