@@ -38,7 +38,9 @@ fun processCommonAdsParams(url: Url): Url {
         "unique_aff_sub2", // Affiliate
         "unique_aff_sub3", // Affiliate
         "unique_aff_sub4", // Affiliate
-        "unique_aff_sub5" // Affiliate
+        "unique_aff_sub5", // Affiliate
+        "ha_source", // HUAWEI
+        "ha_sourceId", // HUAWEI
     )
     val filteredParameters = Parameters.build {
         url.parameters.forEach { key, values -> if (key !in targetParams) appendAll(key, values) }
