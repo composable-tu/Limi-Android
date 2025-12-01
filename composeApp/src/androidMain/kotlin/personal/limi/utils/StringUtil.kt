@@ -42,7 +42,7 @@ fun Context.textShare(textShared: String, withAndroidSharesheet: Boolean) {
         type = "text/plain"
     }
 
-    this.applicationContext.startActivity(
+    this.startActivity(
         if (withAndroidSharesheet) Intent.createChooser(sendIntent, null) else sendIntent
     )
 }
