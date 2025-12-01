@@ -22,6 +22,6 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v5
       with:
-        name: app-debug.apk
-        path: app/build/outputs/apk/debug/app-debug.apk
+        name: composeApp-debug.apk
+        path: composeApp/build/outputs/apk/debug/composeApp-debug.apk
         retention-days: 90
