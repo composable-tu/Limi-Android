@@ -33,6 +33,7 @@ kotlin {
             implementation(libs.ktor.client.cio)
             implementation(libs.androidx.datastore)
             implementation(libs.androidx.datastore.preferences)
+            implementation(libs.navigation.compose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

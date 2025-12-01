@@ -49,7 +49,7 @@ import personal.limi.utils.textCopyThenPost
 @Composable
 @Preview
 fun SharePanel(
-    viewModel: SharePanelViewModel = viewModel(), onActivityClose: () -> Unit = {}
+    viewModel: SharePanelViewModel = viewModel{ SharePanelViewModel() }, onActivityClose: () -> Unit = {}
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     rememberCoroutineScope()

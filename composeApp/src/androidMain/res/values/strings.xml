@@ -8,4 +8,7 @@
     <string name="copied">已复制</string>
     <string name="no_links_found">未找到链接</string>
     <string name="processing_error">处理出错：%1$s</string>
+    <string name="home">主页</string>
+    <string name="rule">规则</string>
+    <string name="setting">设置</string>
 </resources>
