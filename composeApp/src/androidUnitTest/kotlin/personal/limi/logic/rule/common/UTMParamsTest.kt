@@ -1,8 +1,11 @@
 package personal.limi.logic.rule.common
 
 import io.ktor.http.Url
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.junit.Assert.*
 import personal.limi.logic.rules.common.processUTMParams
 
 class UTMParamsTest {
