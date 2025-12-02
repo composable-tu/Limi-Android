@@ -22,6 +22,8 @@ kotlin {
             implementation(libs.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.room.sqlite.wrapper)
+            implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.2")
         }
         commonMain.dependencies {
             implementation(libs.runtime)

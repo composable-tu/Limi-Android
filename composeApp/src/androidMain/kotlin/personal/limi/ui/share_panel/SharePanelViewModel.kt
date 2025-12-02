@@ -50,9 +50,15 @@ class SharePanelViewModel : ViewModel() {
      * 初始化并开始处理文本
      * @param text 要处理的文本
      */
-    fun initializeWithText(context: Context, text: String?) {
-        originalText = text
-        context.processText(text)
+    fun initializeWithText(context: Context, text: String? = null, isEditingMode: Boolean = false) {
+        isProcessing = false
+        isEmpty = false
+        isNotHasUrls = false
+        isError = false
+        if (isEditingMode) isEditing = true else {
+            originalText = text
+            context.processText(text)
+        }
     }
 
     /**

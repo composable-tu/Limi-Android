@@ -17,7 +17,7 @@ class SharePanelActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        val sharedText: String? = intent.getStringExtra(Intent.EXTRA_TEXT)?.ifBlank { null }
+        val isLaunchedFromShare = isLaunchedFromShareIntent(intent)
 
         setContent {
             Surface(
@@ -25,10 +25,34 @@ class SharePanelActivity : ComponentActivity() {
             ) {
                 LimiTheme {
                     val viewModel: SharePanelViewModel = viewModel()
-                    viewModel.initializeWithText(this@SharePanelActivity, sharedText)
+                    if (isLaunchedFromShare) {
+                        val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)?.ifBlank { null }
+                        viewModel.initializeWithText(this@SharePanelActivity, sharedText)
+                    } else viewModel.initializeWithText(
+                        this@SharePanelActivity, isEditingMode = true
+                    )
                     SharePanel(viewModel, onActivityClose = { finish() })
                 }
             }
         }
+    }
+
+    private fun isLaunchedFromShareIntent(intent: Intent): Boolean {
+        // 检查 Intent Action
+        if (intent.action == Intent.ACTION_SEND) return true
+
+        // 检查是否有分享来源标识
+        val source = intent.getStringExtra(EXTRA_SOURCE)
+        if (source == SOURCE_SHARE) return true
+
+        // 检查是否包含分享特有的 extras
+        if (intent.hasExtra(Intent.EXTRA_TEXT) && intent.type?.startsWith("text/") == true) return true
+
+        return false
+    }
+
+    companion object {
+        const val EXTRA_SOURCE = "source"
+        const val SOURCE_SHARE = "share"
     }
 }
