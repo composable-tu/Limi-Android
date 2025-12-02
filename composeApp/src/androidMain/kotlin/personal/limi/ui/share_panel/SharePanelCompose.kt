@@ -108,6 +108,7 @@ fun SharePanel(
                     editText = editText,
                     onEditTextChange = { editText = it },
                     onCancel = { viewModel.isEditing = false },
+                    isCancelEnabled = !viewModel.originalText.isNullOrBlank(),
                     onConfirm = {
                         viewModel.updateAndProcessText(context, editText)
                         viewModel.isEditing = false
@@ -133,13 +134,14 @@ private fun EditingContent(
     editText: String,
     onEditTextChange: (String) -> Unit,
     onCancel: () -> Unit,
+    isCancelEnabled: Boolean,
     onConfirm: () -> Unit,
     isConfirmEnabled: Boolean
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(top = 8.dp, end = 16.dp, start = 16.dp, bottom = 16.dp)
     ) {
         OutlinedTextField(
             value = editText,
@@ -162,17 +164,18 @@ private fun EditingContent(
                     .weight(1f)
                     .padding(end = 8.dp),
                 onClick = onCancel,
+                enabled = isCancelEnabled,
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Close,
-                    contentDescription = stringResource(R.string.cancel),
+                    contentDescription = stringResource(R.string.discard),
                     modifier = Modifier.size(
                         ButtonDefaults.IconSize
                     )
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text(stringResource(R.string.cancel))
+                Text(stringResource(R.string.discard))
             }
             FilledTonalButton(
                 modifier = Modifier
