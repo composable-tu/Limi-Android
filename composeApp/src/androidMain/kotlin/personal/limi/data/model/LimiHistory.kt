@@ -1,4 +1,4 @@
-package personal.limi.utils.room.limi_history
+package personal.limi.data.model
 
 import androidx.room.Dao
 import androidx.room.Entity
