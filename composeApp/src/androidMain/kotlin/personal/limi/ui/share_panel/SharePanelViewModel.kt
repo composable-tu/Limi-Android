@@ -44,11 +44,21 @@ class SharePanelViewModel : ViewModel() {
     var isError by mutableStateOf(false)
         private set
 
+    var isEditing by mutableStateOf(false)
+
     /**
      * 初始化并开始处理文本
      * @param text 要处理的文本
      */
     fun initializeWithText(context: Context, text: String?) {
+        originalText = text
+        context.processText(text)
+    }
+
+    /**
+     * 更新原始文本并处理
+     */
+    fun updateAndProcessText(context: Context, text: String) {
         originalText = text
         context.processText(text)
     }
