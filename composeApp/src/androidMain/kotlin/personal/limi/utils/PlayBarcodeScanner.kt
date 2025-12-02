@@ -6,10 +6,10 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import kotlinx.coroutines.tasks.await
 
-suspend fun Context.launchGMSQRCodeScanner(): List<String> {
+suspend fun startPlayBarcodeScanner(context: Context): List<String> {
     val options = GmsBarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE)
         .enableAutoZoom().build()
-    val scanner = GmsBarcodeScanning.getClient(this, options)
+    val scanner = GmsBarcodeScanning.getClient(context, options)
     val result = mutableListOf<String>()
     val barcode = scanner.startScan().await()
     val rawValue = barcode.rawValue

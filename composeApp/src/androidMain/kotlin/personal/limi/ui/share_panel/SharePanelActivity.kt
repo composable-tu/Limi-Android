@@ -16,7 +16,7 @@ class SharePanelActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-
+        val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)?.ifBlank { null }
         val isLaunchedFromShare = isLaunchedFromShareIntent(intent)
 
         setContent {
@@ -25,10 +25,10 @@ class SharePanelActivity : ComponentActivity() {
             ) {
                 LimiTheme {
                     val viewModel: SharePanelViewModel = viewModel()
-                    if (isLaunchedFromShare) {
-                        val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)?.ifBlank { null }
+                    if (!sharedText.isNullOrBlank()) {
+                        val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
                         viewModel.initializeWithText(this@SharePanelActivity, sharedText)
-                    } else viewModel.initializeWithText(
+                    } else if (!isLaunchedFromShare) viewModel.initializeWithText(
                         this@SharePanelActivity, isEditingMode = true
                     )
                     SharePanel(viewModel, onActivityClose = { finish() })

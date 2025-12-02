@@ -17,4 +17,5 @@
     <string name="add">Add</string>
     <string name="from_text">From Text</string>
     <string name="discard">Discard</string>
+    <string name="scan_qrcode">Scan QRCode</string>
 </resources>

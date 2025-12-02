@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Abc
 import androidx.compose.material.icons.outlined.AllInclusive
+import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButtonMenu
@@ -70,15 +71,16 @@ fun HomeScreen(
     val focusRequester = FocusRequester()
     val context = LocalContext.current
 
-
-
     Box {
         Text(text = stringResource(titleResId))
 
         val fromText = stringResource(R.string.from_text)
+        val scanQRCode = stringResource(R.string.scan_qrcode)
 
         val items = listOf(
-            Icons.Outlined.Abc to fromText, Icons.Outlined.AllInclusive to "TODO......"
+            Icons.Outlined.Abc to fromText,
+            Icons.Outlined.QrCodeScanner to scanQRCode,
+            Icons.Outlined.AllInclusive to "TODO......"
         )
 
         var fabMenuExpanded by rememberSaveable { mutableStateOf(false) }
@@ -151,6 +153,7 @@ fun HomeScreen(
                         fabMenuExpanded = false
                         when (item.second) {
                             fromText -> viewModel.startSharePanel(context)
+                            scanQRCode -> viewModel.startScanQRCode(context)
                         }
                     },
                     icon = { Icon(item.first, contentDescription = null) },
