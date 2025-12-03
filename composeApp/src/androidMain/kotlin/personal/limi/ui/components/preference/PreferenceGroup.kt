@@ -56,7 +56,7 @@ class PreferenceScope {
  * 自动计算内部子元素的圆角逻辑
  */
 @Composable
-fun ExpressivePreferenceGroup(
+fun PreferenceGroup(
     title: String? = null,
     content: PreferenceScope.() -> Unit
 ) {

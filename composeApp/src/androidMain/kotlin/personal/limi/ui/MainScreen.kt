@@ -1,5 +1,7 @@
 package personal.limi.ui
 
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -17,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -59,12 +62,11 @@ fun LimiApp(
             startDestination = MainScreen.Home.name,
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(innerPadding)
+                .padding(
+                    bottom = innerPadding.calculateBottomPadding()
+                )
         ) {
-            composable(MainScreen.Home.name) {
-                HomeScreen(MainScreen.Home.titleResId)
-            }
+            composable(MainScreen.Home.name) { HomeScreen() }
             composable(MainScreen.Rule.name) {
                 RuleScreen(MainScreen.Rule.titleResId)
             }

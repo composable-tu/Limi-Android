@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Bluetooth
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.SimCard
-import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LargeTopAppBar
@@ -43,7 +43,7 @@ fun Android16SettingsScreen() {
         topBar = {
             LargeTopAppBar(
                 title = { Text("Settings") },
-                colors = TopAppBarDefaults.largeTopAppBarColors(
+                colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background
                 )
             )
@@ -55,7 +55,7 @@ fun Android16SettingsScreen() {
                 .verticalScroll(rememberScrollState())
         ) {
             // Group 1: Connectivity (演示 Top/Middle/Bottom 逻辑)
-            ExpressivePreferenceGroup(title = "Connectivity") {
+            PreferenceGroup(title = "Connectivity") {
                 // Top: 上大圆角，下小圆角
                 switch(
                     title = "Internet",
@@ -84,7 +84,7 @@ fun Android16SettingsScreen() {
             }
 
             // Group 2: Device Info (演示 Input 和 Single)
-            ExpressivePreferenceGroup(title = "Device") {
+            PreferenceGroup(title = "Device") {
                 // 如果只有一个 Item，会自动变成全大圆角
                 input(
                     title = "Device Name",
@@ -95,12 +95,12 @@ fun Android16SettingsScreen() {
             }
 
             // Group 3: Sound (演示 Slider 和 Navigation)
-            ExpressivePreferenceGroup(title = "Sound & Vibration") {
+            PreferenceGroup(title = "Sound & Vibration") {
                 slider(
                     title = "Media Volume",
                     value = volume,
                     onValueChange = { volume = it },
-                    icon = Icons.Default.VolumeUp
+                    icon = Icons.AutoMirrored.Filled.VolumeUp
                 )
 
                 navigation(

@@ -24,6 +24,7 @@ kotlin {
             implementation(libs.androidx.room.sqlite.wrapper)
             implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.2")
+            implementation("androidx.core:core-splashscreen:1.2.0")
         }
         commonMain.dependencies {
             implementation(libs.runtime)

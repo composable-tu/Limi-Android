@@ -32,6 +32,7 @@ fun PreferenceScope.navigation(
     summary: String? = null,
     icon: ImageVector? = null,
     valueText: String? = null,
+    showArrow: Boolean = true,
     onClick: () -> Unit
 ) {
     item { shape ->
@@ -51,11 +52,11 @@ fun PreferenceScope.navigation(
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                     }
-                    Icon(
+                    if (showArrow) Icon(
                         imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
                         contentDescription = null,
-                        modifier = Modifier.size(14.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
