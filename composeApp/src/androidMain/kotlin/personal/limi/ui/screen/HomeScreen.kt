@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Abc
 import androidx.compose.material.icons.outlined.AllInclusive
+import androidx.compose.material.icons.outlined.DriveFileRenameOutline
 import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -129,7 +130,7 @@ fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
             val scanQRCode = stringResource(R.string.scan_qrcode)
 
             val items = listOf(
-                Icons.Outlined.Abc to fromText,
+                Icons.Outlined.DriveFileRenameOutline to fromText,
                 Icons.Outlined.QrCodeScanner to scanQRCode,
                 Icons.Outlined.AllInclusive to "TODO......"
             )

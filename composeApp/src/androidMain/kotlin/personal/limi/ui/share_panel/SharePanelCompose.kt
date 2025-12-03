@@ -45,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -91,16 +92,16 @@ fun SharePanel(
                 targetState = viewModel.isEditing, transitionSpec = {
                     if (!targetState) slideInHorizontally(
                         initialOffsetX = { fullWidth -> fullWidth },
-                        animationSpec = tween(durationMillis = 350)
+                        animationSpec = tween(durationMillis = 300)
                     ) togetherWith slideOutHorizontally(
                         targetOffsetX = { fullWidth -> -fullWidth },
-                        animationSpec = tween(durationMillis = 350)
+                        animationSpec = tween(durationMillis = 300)
                     ) else slideInHorizontally(
                         initialOffsetX = { fullWidth -> -fullWidth },
-                        animationSpec = tween(durationMillis = 350)
+                        animationSpec = tween(durationMillis = 300)
                     ) togetherWith slideOutHorizontally(
                         targetOffsetX = { fullWidth -> fullWidth },
-                        animationSpec = tween(durationMillis = 350)
+                        animationSpec = tween(durationMillis = 300)
                     )
                 }, label = "EditTransition"
             ) { editing ->
@@ -138,6 +139,7 @@ private fun EditingContent(
     onConfirm: () -> Unit,
     isConfirmEnabled: Boolean
 ) {
+    val focusManager = LocalFocusManager.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -163,7 +165,10 @@ private fun EditingContent(
                 modifier = Modifier
                     .weight(1f)
                     .padding(end = 8.dp),
-                onClick = onCancel,
+                onClick = {
+                    focusManager.clearFocus()
+                    onCancel()
+                },
                 enabled = isCancelEnabled,
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
             ) {
@@ -181,7 +186,10 @@ private fun EditingContent(
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 8.dp),
-                onClick = onConfirm,
+                onClick = {
+                    focusManager.clearFocus()
+                    onConfirm()
+                },
                 enabled = isConfirmEnabled,
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
             ) {
