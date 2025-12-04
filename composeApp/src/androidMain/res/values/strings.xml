@@ -17,4 +17,14 @@
     <string name="from_text">来自文本</string>
     <string name="discard">丢弃</string>
     <string name="scan_qrcode">扫描二维码</string>
+    <string name="bilibili_rule">Bilibili</string>
+    <string name="bilibili_rule_desc">将 b23.tv 短链还原为原始链接</string>
+    <string name="utm_rule">Urchin Tracking Module</string>
+    <string name="utm_rule_desc">移除 UTM 标准 Url 参数</string>
+    <string name="utm_enhanced_rule">UTM 扩展</string>
+    <string name="utm_enhanced_rule_desc">移除所有以“utm_”开头的 Url 参数</string>
+    <string name="common_params_rule">公共参数</string>
+    <string name="common_params_rule_desc">移除常见的 Url 参数</string>
+    <string name="common_rules_group">通用规则</string>
+    <string name="exceptional_rules_group">特殊规则</string>
 </resources>

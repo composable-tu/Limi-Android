@@ -6,14 +6,25 @@ import personal.limi.logic.rules.bilibili.bilibiliNoParamsTargetHost
 import personal.limi.logic.rules.bilibili.bilibiliRedirectTargetHost
 import personal.limi.logic.rules.bilibili.processBilibiliNoParamsUrl
 import personal.limi.logic.rules.bilibili.processBilibiliRedirectUrl
-import personal.limi.logic.rules.common.processCommonAdsParams
+import personal.limi.logic.rules.common.processCommonParams
 import personal.limi.logic.rules.common.processUTMParams
 import personal.limi.logic.rules.common.processUTMParamsEnhanced
+import personal.limi.utils.datastore.DataStorePreferences
+
+object RuleIds {
+    const val BILIBILI = "bilibili_rules"
+    const val COMMON_PARAMS = "common_params_rules"
+    const val UTM_PARAMS = "utm_params_rules"
+    const val UTM_PARAMS_ENHANCED = "utm_params_enhanced_rules"
+}
 
 suspend fun processUrl(urlString: String): String {
 
-    val ruleConfig = RuleConfig( // TODO: 版本迭代后需要删除这行代码
-        commonAdsParams = true, UTMParams = true, UTMParamsEnhanced = false, bilibili = true
+    val ruleConfig = RuleConfig(
+        commonParams = DataStorePreferences.getBoolean(RuleIds.COMMON_PARAMS, true),
+        UTMParams = DataStorePreferences.getBoolean(RuleIds.UTM_PARAMS, true),
+        UTMParamsEnhanced = DataStorePreferences.getBoolean(RuleIds.UTM_PARAMS_ENHANCED, false),
+        bilibili = DataStorePreferences.getBoolean(RuleIds.BILIBILI, true)
     )
 
     var finalUrl = Url(urlString)
@@ -32,7 +43,7 @@ suspend fun processUrl(urlString: String): String {
     }
 
     // 第二层：通用参数去除处理
-    if (ruleConfig.commonAdsParams) finalUrl = processCommonAdsParams(finalUrl)
+    if (ruleConfig.commonParams) finalUrl = processCommonParams(finalUrl)
     if (ruleConfig.UTMParams) finalUrl = processUTMParams(finalUrl)
     if (ruleConfig.UTMParamsEnhanced) finalUrl = processUTMParamsEnhanced(finalUrl)
 

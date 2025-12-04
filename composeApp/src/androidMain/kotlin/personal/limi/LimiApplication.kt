@@ -11,7 +11,7 @@ class LimiApplication : Application() {
         super.onCreate()
 
         DataStorePreferences.apply {
-            applicationContext.initialize()
+            this@LimiApplication.initialize()
         }
         database = getRoomDatabase(this)
     }
