@@ -23,6 +23,7 @@ interface LimiHistoryDao {
 data class LimiHistoryEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val originUrl: String,
+    val originHost: String,
     val processedUrl: String,
     val datetime: String
 )

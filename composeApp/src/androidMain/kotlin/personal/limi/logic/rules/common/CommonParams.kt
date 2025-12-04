@@ -4,7 +4,7 @@ import io.ktor.http.Parameters
 import io.ktor.http.URLBuilder
 import io.ktor.http.Url
 
-fun processCommonAdsParams(url: Url): Url {
+fun processCommonParams(url: Url): Url {
     val targetParams = listOf(
         "gclid", // Google
         "dclid", // Google

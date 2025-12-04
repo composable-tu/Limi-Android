@@ -15,20 +15,24 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import personal.limi.R
+import personal.limi.ui.MainViewModel
 import personal.limi.ui.components.preference.PreferenceGroup
 import personal.limi.ui.components.preference.switch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview
-fun RuleScreen(titleResId: Int = R.string.rule) {
+fun RuleScreen(
+    viewModel: MainViewModel = viewModel { MainViewModel() }, titleResId: Int = R.string.rule
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val listState = rememberLazyListState()
     val layoutDirection = LocalLayoutDirection.current
@@ -55,19 +59,41 @@ fun RuleScreen(titleResId: Int = R.string.rule) {
                 )
         ) {
             item {
-                PreferenceGroup("通用规则") {
-                    for (i in 1..4) switch(
-                        title = "通用规则 $i",
-                        summary = "该规则将文本文本文本文本文本文本文本文本文本文本文本文本",
-                        checked = i % 2 == 0,
-                        onCheckedChange = {})
+                val commonParamsRuleTitle = stringResource(R.string.common_params_rule)
+                val commonParamsRuleDesc = stringResource(R.string.common_params_rule_desc)
+                val commonParamsRuleEnabled by viewModel.isCommonParamsRuleEnabled.collectAsState()
+                val utmRuleTitle = stringResource(R.string.utm_rule)
+                val utmRuleDesc = stringResource(R.string.utm_rule_desc)
+                val utmRuleEnabled by viewModel.isUTMParamsRuleEnabled.collectAsState()
+                val utmEnhancedTitle = stringResource(R.string.utm_enhanced_rule)
+                val utmEnhancedDesc = stringResource(R.string.utm_enhanced_rule_desc)
+                val utmEnhancedEnabled by viewModel.isUTMParamsEnhancedRuleEnabled.collectAsState()
+                PreferenceGroup(stringResource(R.string.common_rules_group)) {
+                    switch(
+                        title = commonParamsRuleTitle,
+                        summary = commonParamsRuleDesc,
+                        checked = commonParamsRuleEnabled,
+                        onCheckedChange = { viewModel.setCommonParamsRuleEnabled() })
+                    switch(
+                        title = utmRuleTitle,
+                        summary = utmRuleDesc,
+                        checked = utmRuleEnabled,
+                        onCheckedChange = { viewModel.setUTMParamsRuleEnabled() })
+                    switch(
+                        title = utmEnhancedTitle,
+                        summary = utmEnhancedDesc,
+                        checked = utmEnhancedEnabled,
+                        onCheckedChange = { viewModel.setUTMParamsEnhancedRuleEnabled() })
                 }
-                PreferenceGroup("特定规则") {
-                    for (i in 1..3) switch(
-                        title = "Example 规则 $i",
-                        summary = "该规则将作用于特定文本文本文本文本文本文本文本文本文本文本文本文本",
-                        checked = i % 2 != 0,
-                        onCheckedChange = {})
+                val bilibiliRuleTitle = stringResource(R.string.bilibili_rule)
+                val bilibiliRuleDesc = stringResource(R.string.bilibili_rule_desc)
+                val bilibiliRuleEnabled by viewModel.isBilibiliRuleEnabled.collectAsState()
+                PreferenceGroup(stringResource(R.string.exceptional_rules_group)) {
+                    switch(
+                        title = bilibiliRuleTitle,
+                        summary = bilibiliRuleDesc,
+                        checked = bilibiliRuleEnabled,
+                        onCheckedChange = { viewModel.setBilibiliRuleEnabled() })
                 }
                 Spacer(Modifier.height(8.dp))
             }

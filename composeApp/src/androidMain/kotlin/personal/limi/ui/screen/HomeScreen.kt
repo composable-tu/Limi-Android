@@ -13,7 +13,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.outlined.Abc
 import androidx.compose.material.icons.outlined.AllInclusive
 import androidx.compose.material.icons.outlined.DriveFileRenameOutline
 import androidx.compose.material.icons.outlined.QrCodeScanner
@@ -115,10 +114,10 @@ fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
                 state = listState, modifier = Modifier.fillMaxSize()
             ) {
                 item {
-                    PreferenceGroup {
-                        for (i in 0..30) navigation(
-                            title = "2025 年 11 月 $i 日",
-                            summary = "https://www.example.com/?utm_source=123$i",
+                    for (i in 1..5) PreferenceGroup(title = "2025 年 11 月 ${6 - i} 日") {
+                        for (j in 1..i) navigation(
+                            title = "www.example.com",
+                            summary = "https://www.example.com/?utm_source=123$j",
                             onClick = {})
                     }
 

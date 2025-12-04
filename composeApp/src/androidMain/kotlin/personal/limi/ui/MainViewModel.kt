@@ -7,10 +7,32 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import personal.limi.logic.RuleIds
+
 import personal.limi.ui.share_panel.SharePanelActivity
+import personal.limi.utils.asState
+import personal.limi.utils.datastore.DataStorePreferences
 import personal.limi.utils.startPlayBarcodeScanner
 
 class MainViewModel : ViewModel() {
+    val isCommonParamsRuleEnabled =
+        DataStorePreferences.getBooleanFlow(RuleIds.COMMON_PARAMS, true)
+            .asState(viewModelScope, true)
+    val isUTMParamsRuleEnabled = DataStorePreferences.getBooleanFlow(RuleIds.UTM_PARAMS, true)
+        .asState(viewModelScope, true)
+    val isUTMParamsEnhancedRuleEnabled =
+        DataStorePreferences.getBooleanFlow(RuleIds.UTM_PARAMS_ENHANCED, false)
+            .asState(viewModelScope, false)
+    val isBilibiliRuleEnabled =
+        DataStorePreferences.getBooleanFlow(RuleIds.BILIBILI, true).asState(viewModelScope, true)
+
+    fun setCommonParamsRuleEnabled() = DataStorePreferences.putBooleanSync(RuleIds.COMMON_PARAMS, !isCommonParamsRuleEnabled.value)
+    fun setUTMParamsRuleEnabled() = DataStorePreferences.putBooleanSync(RuleIds.UTM_PARAMS, !isUTMParamsRuleEnabled.value)
+    fun setUTMParamsEnhancedRuleEnabled() =
+        DataStorePreferences.putBooleanSync(RuleIds.UTM_PARAMS_ENHANCED, !isUTMParamsEnhancedRuleEnabled.value)
+    fun setBilibiliRuleEnabled() =
+        DataStorePreferences.putBooleanSync(RuleIds.BILIBILI, !isBilibiliRuleEnabled.value)
+
     fun startSharePanel(context: Context) {
         val intent = Intent(context, SharePanelActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
