@@ -68,35 +68,65 @@ fun RuleScreen(
                 val utmEnhancedTitle = stringResource(R.string.utm_enhanced_rule)
                 val utmEnhancedDesc = stringResource(R.string.utm_enhanced_rule_desc)
                 val utmEnhancedEnabled by viewModel.isUTMParamsEnhancedRuleEnabled.collectAsState()
-                PreferenceGroup(stringResource(R.string.common_rules_group)) {
-                    switch(
+
+                val commonRulesList = listOf(
+                    SwitchPreferenceItem(
                         title = commonParamsRuleTitle,
                         summary = commonParamsRuleDesc,
                         checked = commonParamsRuleEnabled,
-                        onCheckedChange = { viewModel.setCommonParamsRuleEnabled() })
-                    switch(
+                        onCheckedChange = { bool -> viewModel.setCommonParamsRuleEnabled(bool) }),
+                    SwitchPreferenceItem(
                         title = utmRuleTitle,
                         summary = utmRuleDesc,
                         checked = utmRuleEnabled,
-                        onCheckedChange = { viewModel.setUTMParamsRuleEnabled() })
-                    switch(
+                        onCheckedChange = { bool -> viewModel.setUTMParamsRuleEnabled(bool) }),
+                    SwitchPreferenceItem(
                         title = utmEnhancedTitle,
                         summary = utmEnhancedDesc,
                         checked = utmEnhancedEnabled,
-                        onCheckedChange = { viewModel.setUTMParamsEnhancedRuleEnabled() })
+                        onCheckedChange = { bool -> viewModel.setUTMParamsEnhancedRuleEnabled(bool) }))
+
+                PreferenceGroup(stringResource(R.string.common_rules_group)) {
+                    commonRulesList.forEach { item ->
+                        switch(
+                            title = item.title,
+                            summary = item.summary,
+                            checked = item.checked,
+                            onCheckedChange = item.onCheckedChange
+                        )
+                    }
                 }
+
                 val bilibiliRuleTitle = stringResource(R.string.bilibili_rule)
                 val bilibiliRuleDesc = stringResource(R.string.bilibili_rule_desc)
                 val bilibiliRuleEnabled by viewModel.isBilibiliRuleEnabled.collectAsState()
+
+                val exceptionalRulesList = listOf(
+                    SwitchPreferenceItem(
+                    title = bilibiliRuleTitle,
+                    summary = bilibiliRuleDesc,
+                    checked = bilibiliRuleEnabled,
+                    onCheckedChange = { bool -> viewModel.setBilibiliRuleEnabled(bool) }))
+
                 PreferenceGroup(stringResource(R.string.exceptional_rules_group)) {
-                    switch(
-                        title = bilibiliRuleTitle,
-                        summary = bilibiliRuleDesc,
-                        checked = bilibiliRuleEnabled,
-                        onCheckedChange = { viewModel.setBilibiliRuleEnabled() })
+                    exceptionalRulesList.forEach { item ->
+                        switch(
+                            title = item.title,
+                            summary = item.summary,
+                            checked = item.checked,
+                            onCheckedChange = item.onCheckedChange
+                        )
+                    }
                 }
                 Spacer(Modifier.height(8.dp))
             }
         }
     }
 }
+
+data class SwitchPreferenceItem(
+    val title: String,
+    val summary: String,
+    val checked: Boolean,
+    val onCheckedChange: (Boolean) -> Unit
+)
