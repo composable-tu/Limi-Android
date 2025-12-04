@@ -28,4 +28,5 @@
     <string name="common_params_rule_desc">移除常见的 Url 参数</string>
     <string name="common_rules_group">通用规则</string>
     <string name="exceptional_rules_group">特殊规则</string>
+    <string name="no_history">暂无历史</string>
 </resources>

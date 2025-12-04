@@ -28,4 +28,5 @@
     <string name="common_params_rule_desc">Remove common url parameters</string>
     <string name="common_rules_group">Common Rules</string>
     <string name="exceptional_rules_group">Exceptional Rules</string>
+    <string name="no_history">No history.</string>
 </resources>

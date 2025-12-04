@@ -147,7 +147,18 @@ fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
                         }
                     }
 
-                    Spacer(Modifier.height(8.dp))
+                    if (historyList.isEmpty()) Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(start = 16.dp, end = 16.dp, top = 64.dp, bottom = 64.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.no_history),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    } else Spacer(Modifier.height(8.dp))
                 }
             }
 
