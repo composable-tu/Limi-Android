@@ -1,29 +1,18 @@
 package personal.limi.data.model
 
-import androidx.room.Dao
 import androidx.room.Entity
-import androidx.room.Insert
 import androidx.room.PrimaryKey
-import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
-@Dao
-interface LimiHistoryDao {
-    @Insert
-    suspend fun insert(item: LimiHistoryEntity)
-
-    @Query("SELECT count(*) FROM LimiHistoryEntity")
-    suspend fun count(): Int
-
-    @Query("SELECT * FROM LimiHistoryEntity")
-    fun getAllAsFlow(): Flow<List<LimiHistoryEntity>>
-}
-
+@OptIn(ExperimentalTime::class)
 @Entity
 data class LimiHistoryEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val originUrl: String,
-    val originHost: String,
     val processedUrl: String,
-    val datetime: String
+    val datetime: String = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        .toString()
 )

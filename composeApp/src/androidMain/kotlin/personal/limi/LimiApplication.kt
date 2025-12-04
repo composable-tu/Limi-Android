@@ -14,5 +14,11 @@ class LimiApplication : Application() {
             this@LimiApplication.initialize()
         }
         database = getRoomDatabase(this)
+        Companion.database = this.database
+    }
+    
+    companion object {
+        lateinit var database: AppDatabase
+            private set
     }
 }

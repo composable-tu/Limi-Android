@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import kotlinx.coroutines.Dispatchers
-import personal.limi.data.model.LimiHistoryDao
 import personal.limi.data.model.LimiHistoryEntity
+import personal.limi.utils.room.LimiHistoryDao
 
 const val limiRoomDB = "limi_room.db"
 

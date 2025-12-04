@@ -5,16 +5,24 @@ import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import personal.limi.LimiApplication
+import personal.limi.data.model.LimiHistoryEntity
 import personal.limi.logic.RuleIds
-
 import personal.limi.ui.share_panel.SharePanelActivity
 import personal.limi.utils.asState
 import personal.limi.utils.datastore.DataStorePreferences
+import personal.limi.utils.room.LimiHistoryDao
 import personal.limi.utils.startPlayBarcodeScanner
 
-class MainViewModel : ViewModel() {
+class MainViewModel() : ViewModel() {
+    val dao: LimiHistoryDao = LimiApplication.database.getLimiHistoryDao()
+
+    val historyListStateFlow: StateFlow<List<LimiHistoryEntity>> =
+        dao.getAllAsFlowSortedByDatetimeDesc().asState(viewModelScope, emptyList())
+
     val isCommonParamsRuleEnabled = DataStorePreferences.getBooleanFlow(RuleIds.COMMON_PARAMS, true)
         .asState(viewModelScope, true)
     val isUTMParamsRuleEnabled =

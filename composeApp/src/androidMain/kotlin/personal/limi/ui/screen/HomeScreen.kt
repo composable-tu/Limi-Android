@@ -35,6 +35,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.animateFloatingActionButton
 import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -67,10 +68,14 @@ import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.darkokoa.pangu.Pangu
 import personal.limi.R
 import personal.limi.ui.MainViewModel
 import personal.limi.ui.components.preference.PreferenceGroup
 import personal.limi.ui.components.preference.navigation
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -87,6 +92,7 @@ fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
     val focusRequester = FocusRequester()
     val context = LocalContext.current
     val layoutDirection = LocalLayoutDirection.current
+    val historyList by viewModel.historyListStateFlow.collectAsState()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -114,11 +120,31 @@ fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
                 state = listState, modifier = Modifier.fillMaxSize()
             ) {
                 item {
-                    for (i in 1..5) PreferenceGroup(title = "2025 年 11 月 ${6 - i} 日") {
-                        for (j in 1..i) navigation(
-                            title = "www.example.com",
-                            summary = "https://www.example.com/?utm_source=123$j",
-                            onClick = {})
+                    // 按日期分组显示历史记录
+                    val groupedHistory = historyList.groupBy {
+                        // 提取日期部分 (YYYY-MM-DD)
+                        it.datetime.substringBefore("T")
+                    }
+
+                    val context = LocalContext.current
+                    val locale = context.resources.configuration.locales[0]
+
+                    groupedHistory.forEach { (date, histories) ->
+                        val localDate = LocalDate.parse(date)
+                        val formatter =
+                            DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale)
+                        val formattedDate = Pangu.spacingText(localDate.format(formatter))
+
+                        PreferenceGroup(title = formattedDate) {
+                            histories.forEach { history ->
+                                val timePart =
+                                    history.datetime.substringAfter("T").substringBeforeLast(".")
+                                navigation(
+                                    title = timePart,
+                                    summary = history.processedUrl,
+                                    onClick = { /* TODO: 处理点击事件 */ })
+                            }
+                        }
                     }
 
                     Spacer(Modifier.height(8.dp))

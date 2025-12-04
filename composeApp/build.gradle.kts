@@ -43,6 +43,8 @@ kotlin {
             implementation(libs.navigation.compose)
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
+            implementation(libs.kotlinx.datetime)
+            implementation("io.github.darkokoa:pangu:0.2.0")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

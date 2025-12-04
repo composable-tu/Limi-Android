@@ -15,9 +15,12 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
+import personal.limi.LimiApplication
 import personal.limi.R
+import personal.limi.data.model.LimiHistoryEntity
 import personal.limi.logic.processUrl
 import personal.limi.utils.extractUrlList
+import personal.limi.utils.room.LimiHistoryDao
 import personal.limi.utils.textCopyThenPost
 import personal.limi.utils.textShare
 
@@ -45,6 +48,8 @@ class SharePanelViewModel : ViewModel() {
         private set
 
     var isEditing by mutableStateOf(false)
+
+    private val dao: LimiHistoryDao = LimiApplication.database.getLimiHistoryDao()
 
     /**
      * 初始化并开始处理文本
@@ -136,6 +141,9 @@ class SharePanelViewModel : ViewModel() {
                         processedUrlList += processedUrl
                     }
                     processedText = resultText
+                    if (!originalText.isNullOrBlank()&&!processedText.isNullOrBlank())saveToHistory(
+                        originalText!!, processedText!!
+                    )
                 }
             } catch (e: CancellationException) {
                 // 协程被取消时（例如用户退出屏幕），通常不需要特殊处理，但可以记录。
@@ -147,6 +155,17 @@ class SharePanelViewModel : ViewModel() {
             } finally {
                 isProcessing = false
             }
+        }
+    }
+
+    private fun saveToHistory(originUrl: String, processedUrl: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dao.insert(
+                LimiHistoryEntity(
+                    originUrl = originUrl,
+                    processedUrl = processedUrl,
+                )
+            )
         }
     }
 }
