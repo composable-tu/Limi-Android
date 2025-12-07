@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
@@ -25,15 +26,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.pm.PackageInfoCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import personal.limi.R
+import personal.limi.ui.MainViewModel
 import personal.limi.ui.components.preference.PreferenceGroup
 import personal.limi.ui.components.preference.navigation
 import personal.limi.ui.components.preference.switch
 
+object SettingIds {
+    const val INCOGNITO_MODE = "incognito_mode"
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 @Preview
-fun SettingScreen(titleResId: Int = R.string.setting) {
+fun SettingScreen(
+    viewModel: MainViewModel = viewModel { MainViewModel() },
+    titleResId: Int = R.string.setting
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val listState = rememberLazyListState()
     val layoutDirection = LocalLayoutDirection.current
@@ -61,7 +71,9 @@ fun SettingScreen(titleResId: Int = R.string.setting) {
             )
         },
     ) { innerPadding ->
-
+        val increognitoMode = stringResource(R.string.incognito_mode)
+        val increognitoModeDesc = stringResource(R.string.incognito_mode_desc)
+        val increognitoModeEnabled by viewModel.isIncreognitoModeEnabled.collectAsState()
         LazyColumn(
             state = listState, modifier = Modifier
                 .fillMaxSize()
@@ -73,23 +85,20 @@ fun SettingScreen(titleResId: Int = R.string.setting) {
         ) {
             item {
                 PreferenceGroup("通用") {
-                    for (i in 1..4) switch(
-                        title = "通用设置 $i",
-                        checked = i % 2 == 0,
-                        onCheckedChange = {}
-                    )
+                    switch(
+                        title = increognitoMode,
+                        summary = increognitoModeDesc,
+                        checked = increognitoModeEnabled,
+                        onCheckedChange = { bool -> viewModel.setIncognitoModeEnabled(bool) })
                 }
                 PreferenceGroup("关于") {
                     navigation(
                         title = "关于 Limi",
                         summary = "版本：$appVersion",
-                        showArrow= false,
-                        onClick = {}
-                    )
+                        showArrow = false,
+                        onClick = {})
                     navigation(
-                        title = "开放源代码许可",
-                        onClick = {}
-                    )
+                        title = "开放源代码许可", onClick = {})
                 }
                 Spacer(Modifier.height(8.dp))
             }

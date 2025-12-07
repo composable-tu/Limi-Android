@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import personal.limi.LimiApplication
 import personal.limi.data.model.LimiHistoryEntity
 import personal.limi.logic.RuleIds
+import personal.limi.ui.screen.SettingIds
 import personal.limi.ui.share_panel.SharePanelActivity
 import personal.limi.utils.asState
 import personal.limi.utils.datastore.DataStorePreferences
@@ -45,6 +46,13 @@ class MainViewModel() : ViewModel() {
     fun setBilibiliRuleEnabled(bool: Boolean) =
         DataStorePreferences.putBooleanSync(RuleIds.BILIBILI, bool)
 
+    val isIncreognitoModeEnabled =
+        DataStorePreferences.getBooleanFlow(SettingIds.INCOGNITO_MODE, false)
+            .asState(viewModelScope, false)
+
+    fun setIncognitoModeEnabled(bool: Boolean) =
+        DataStorePreferences.putBooleanSync(SettingIds.INCOGNITO_MODE, bool)
+
     fun startSharePanel(context: Context) {
         val intent = Intent(context, SharePanelActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -64,7 +72,6 @@ class MainViewModel() : ViewModel() {
                     context.startActivity(intent)
                 } else throw Exception("扫码结果为空")
             } catch (_: Exception) {
-
             }
         }
     }

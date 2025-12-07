@@ -19,6 +19,8 @@ import personal.limi.LimiApplication
 import personal.limi.R
 import personal.limi.data.model.LimiHistoryEntity
 import personal.limi.logic.processUrl
+import personal.limi.ui.screen.SettingIds
+import personal.limi.utils.datastore.DataStorePreferences
 import personal.limi.utils.extractUrlList
 import personal.limi.utils.room.LimiHistoryDao
 import personal.limi.utils.textCopyThenPost
@@ -141,7 +143,9 @@ class SharePanelViewModel : ViewModel() {
                         processedUrlList += processedUrl
                     }
                     processedText = resultText
-                    if (!originalText.isNullOrBlank()&&!processedText.isNullOrBlank())saveToHistory(
+                    val isIncognitoModeEnabled =
+                        DataStorePreferences.getBoolean(SettingIds.INCOGNITO_MODE, false)
+                    if (!isIncognitoModeEnabled && !originalText.isNullOrBlank() && !processedText.isNullOrBlank()) saveToHistory(
                         originalText!!, processedText!!
                     )
                 }

@@ -82,7 +82,7 @@ fun LimiApp(
                     when (screen) {
                         MainScreen.Home -> HomeScreen()
                         MainScreen.Rule -> RuleScreen(viewModel, MainScreen.Rule.titleResId)
-                        MainScreen.Setting -> SettingScreen(MainScreen.Setting.titleResId)
+                        MainScreen.Setting -> SettingScreen(viewModel, MainScreen.Setting.titleResId)
                     }
                 }
             }

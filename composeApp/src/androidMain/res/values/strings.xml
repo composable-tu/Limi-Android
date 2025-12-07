@@ -28,4 +28,6 @@
     <string name="common_rules_group">通用规则</string>
     <string name="exceptional_rules_group">特殊规则</string>
     <string name="no_history">暂无历史</string>
+    <string name="incognito_mode">无痕模式</string>
+    <string name="incognito_mode_desc">新处理结果不存储到历史记录，已存储的历史记录不影响</string>
 </resources>
