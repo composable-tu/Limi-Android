@@ -59,7 +59,7 @@ class LinkExtractorTest {
     fun testExtractDuplicateUrls() {
         val text = "Visit https://www.example.com and https://www.example.com again"
         val result = extractUrlList(text)
-        assertEquals(listOf("https://www.example.com", "https://www.example.com"), result)
+        assertEquals(listOf("https://www.example.com"), result)
     }
 
     @Test
@@ -81,5 +81,19 @@ class LinkExtractorTest {
         val text = "Visit https://www.example.com and https://www.例子.com"
         val result = extractUrlList(text, truncateNonAscii = false)
         assertEquals(listOf("https://www.example.com"), result)
+    }
+
+    @Test
+    fun testExtractUrlsWithNumericTld() {
+        val text = "No.2: Visit https://www.example.com for more information"
+        val result = extractUrlList(text)
+        assertEquals(listOf("https://www.example.com"), result)
+    }
+
+    @Test
+    fun testExtractUrlsWithNumericTld2() {
+        val text = "No.1 No.2 No.3"
+        val result = extractUrlList(text)
+        assertTrue(result.isEmpty())
     }
 }

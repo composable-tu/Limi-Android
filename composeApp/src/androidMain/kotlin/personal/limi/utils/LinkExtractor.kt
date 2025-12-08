@@ -3,7 +3,7 @@ package personal.limi.utils
 import io.ktor.http.Url
 
 private const val URL_PATTERN =
-    """(https?://)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)"""
+    """(https?://)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z][a-zA-Z0-9()]{0,5}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)"""
 
 private val DefaultUrlRegex = Regex(URL_PATTERN)
 private val regex: Regex = DefaultUrlRegex
@@ -34,9 +34,6 @@ fun extractUrlList(
     extractedLinks = extractedLinks.map(::removeTrailingDotFromHost)
 
     if (validateUrls) extractedLinks = extractedLinks.filter(::isValidUrl)
-    if (!truncateNonAscii) return extractedLinks
-
-    // 如果开启了非 ASCII 截断
     return extractedLinks.distinct() // 确保截断后相同的链接只出现一次
 }
 
@@ -49,7 +46,15 @@ private fun isValidUrl(url: String): Boolean {
         val formattedUrl = if (!url.startsWith("http://") && !url.startsWith("https://")) {
             "http://$url"
         } else url
-        Url(formattedUrl)
+        val parsedUrl = Url(formattedUrl)
+
+        // 主机名必须包含点（用于无协议 URL，如 www.example.com）
+        if (!url.startsWith("http://") && !url.startsWith("https://") && !parsedUrl.host.contains('.'))
+            return false
+
+        // 过滤纯数字 TLD（如 .123）
+        val tld = parsedUrl.host.substringAfterLast('.', "")
+        if (tld.isNotEmpty() && tld.all { it.isDigit() }) return false
         true
     } catch (_: Exception) {
         false
