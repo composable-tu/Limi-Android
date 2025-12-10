@@ -47,11 +47,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import personal.limi.R
@@ -274,6 +279,25 @@ private fun EditCard(onClick: () -> Unit) {
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ResultCard(viewModel: SharePanelViewModel) {
+    val scrollState = rememberScrollState()
+
+    // 只有当文本可以滚动时才消费滚动事件和 fling 事件
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPostScroll(
+                consumed: Offset, available: Offset, source: NestedScrollSource
+            ): Offset {
+                return if (scrollState.canScrollForward || scrollState.canScrollBackward) available else Offset.Zero
+            }
+
+            override suspend fun onPostFling(
+                consumed: Velocity, available: Velocity
+            ): Velocity {
+                return if (scrollState.canScrollForward || scrollState.canScrollBackward) available else Velocity.Zero
+            }
+        }
+    }
+
     Card(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -308,13 +332,14 @@ private fun ResultCard(viewModel: SharePanelViewModel) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .heightIn(max = 170.dp)
+                            .nestedScroll(nestedScrollConnection)
                     ) {
                         Text(
                             text = viewModel.processedText ?: "",
                             style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .verticalScroll(rememberScrollState()),
+                                .verticalScroll(scrollState),
                         )
                     }
                 } else if (viewModel.isEmpty) {
