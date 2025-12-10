@@ -50,8 +50,15 @@ class MainViewModel() : ViewModel() {
         DataStorePreferences.getBooleanFlow(SettingIds.INCOGNITO_MODE, false)
             .asState(viewModelScope, false)
 
+    val isUsedIntentFilter =
+        DataStorePreferences.getBooleanFlow(SettingIds.USE_INTENT_FILTER, false)
+            .asState(viewModelScope, false)
+
     fun setIncognitoModeEnabled(bool: Boolean) =
         DataStorePreferences.putBooleanSync(SettingIds.INCOGNITO_MODE, bool)
+
+    fun setUsedIntentFilter(bool: Boolean) =
+        DataStorePreferences.putBooleanSync(SettingIds.USE_INTENT_FILTER, bool)
 
     fun startSharePanel(context: Context) {
         val intent = Intent(context, SharePanelActivity::class.java).apply {

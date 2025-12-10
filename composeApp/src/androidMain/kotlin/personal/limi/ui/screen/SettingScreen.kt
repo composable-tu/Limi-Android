@@ -35,6 +35,7 @@ import personal.limi.ui.components.preference.switch
 
 object SettingIds {
     const val INCOGNITO_MODE = "incognito_mode"
+    const val USE_INTENT_FILTER = "use_intent_filter"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,6 +75,10 @@ fun SettingScreen(
         val increognitoMode = stringResource(R.string.incognito_mode)
         val increognitoModeDesc = stringResource(R.string.incognito_mode_desc)
         val increognitoModeEnabled by viewModel.isIncreognitoModeEnabled.collectAsState()
+        val useIntentFilter = stringResource(R.string.use_intent_filter)
+        val useIntentFilterDesc = stringResource(R.string.use_intent_filter_desc)
+        val useIntentFilterEnabled by viewModel.isUsedIntentFilter.collectAsState()
+
         LazyColumn(
             state = listState, modifier = Modifier
                 .fillMaxSize()
@@ -84,14 +89,19 @@ fun SettingScreen(
                 )
         ) {
             item {
-                PreferenceGroup("通用") {
+                PreferenceGroup(stringResource(R.string.general)) {
                     switch(
                         title = increognitoMode,
                         summary = increognitoModeDesc,
                         checked = increognitoModeEnabled,
                         onCheckedChange = { bool -> viewModel.setIncognitoModeEnabled(bool) })
+                    switch(
+                        title = useIntentFilter,
+                        summary = useIntentFilterDesc,
+                        checked = useIntentFilterEnabled,
+                        onCheckedChange = { bool -> viewModel.setUsedIntentFilter(bool) })
                 }
-                PreferenceGroup("关于") {
+                PreferenceGroup(stringResource(R.string.about)) {
                     navigation(
                         title = "关于 Limi",
                         summary = "版本：$appVersion",

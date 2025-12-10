@@ -30,4 +30,8 @@
     <string name="no_history">暂无历史</string>
     <string name="incognito_mode">无痕模式</string>
     <string name="incognito_mode_desc">新处理结果不存储到历史记录，已存储的历史记录不影响</string>
+    <string name="use_intent_filter">使用意图过滤器</string>
+    <string name="use_intent_filter_desc">使用 Intent 过滤器替代系统分享菜单</string>
+    <string name="general">通用</string>
+    <string name="about">关于</string>
 </resources>
