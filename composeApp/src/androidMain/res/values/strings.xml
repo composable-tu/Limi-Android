@@ -34,4 +34,11 @@
     <string name="use_intent_filter_desc">使用 Intent 过滤器替代系统分享菜单</string>
     <string name="general">通用</string>
     <string name="about">关于</string>
+    <string name="original_text">原文</string>
+    <string name="history_detail">历史详情</string>
+    <string name="time_label">时间</string>
+    <string name="back">返回</string>
+    <string name="delete">删除</string>
+    <string name="confirm_delete_title">删除记录</string>
+    <string name="confirm_delete_message">确定要删除这条历史记录吗？</string>
 </resources>
