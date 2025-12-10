@@ -38,7 +38,7 @@ class LinkExtractorTest {
     fun testExtractUrlsWithoutProtocol() {
         val text = "Visit www.example.com for more info"
         val result = extractUrlList(text)
-        assertEquals(listOf("www.example.com"),  result)
+        assertEquals(listOf("www.example.com"), result)
     }
 
     @Test

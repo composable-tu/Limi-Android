@@ -65,7 +65,7 @@ fun BasePreferenceCell(
                         text = summary,
                         style = MaterialTheme.typography.bodyMedium,
                         color = if (enabled) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
-                        maxLines = 2,
+                        maxLines = 3,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
