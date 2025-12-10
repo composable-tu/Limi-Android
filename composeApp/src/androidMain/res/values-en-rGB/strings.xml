@@ -31,4 +31,8 @@
     <string name="no_history">No history.</string>
     <string name="incognito_mode">Incognito Mode</string>
     <string name="incognito_mode_desc">New processing results will not be stored in history.</string>
+    <string name="use_intent_filter">Use Intent Filter</string>
+    <string name="use_intent_filter_desc">Use Intent filter instead of system sharing menus.</string>
+    <string name="general">General</string>
+    <string name="about">About</string>
 </resources>

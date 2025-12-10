@@ -87,12 +87,9 @@ class SharePanelViewModel : ViewModel() {
 
     /**
      * 分享处理后的文本
-     *
-     * @param withAndroidSharesheet 是否使用 Android Sharesheet 分享面板
      */
-    fun shareText(context: Context, withAndroidSharesheet: Boolean = true) {
-        if (processedText.isNullOrBlank()) return
-        context.textShare(processedText ?: "", withAndroidSharesheet)
+    fun shareText(context: Context) {
+        if (processedText.isNullOrBlank()) return else context.textShare(processedText ?: "")
     }
 
     private fun Context.processText(text: String?) {
