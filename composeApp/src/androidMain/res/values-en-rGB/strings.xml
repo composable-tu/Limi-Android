@@ -35,4 +35,11 @@
     <string name="use_intent_filter_desc">Use Intent filter instead of system sharing menus.</string>
     <string name="general">General</string>
     <string name="about">About</string>
+    <string name="original_text">Original Text</string>
+    <string name="history_detail">History Detail</string>
+    <string name="time_label">Time</string>
+    <string name="back">Back</string>
+    <string name="delete">Delete</string>
+    <string name="confirm_delete_title">Delete Record</string>
+    <string name="confirm_delete_message">Are you sure you want to delete this history record?</string>
 </resources>

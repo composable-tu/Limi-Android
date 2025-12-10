@@ -1,5 +1,6 @@
 package personal.limi.ui.screen
 
+import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -70,6 +71,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.darkokoa.pangu.Pangu
 import personal.limi.R
+import personal.limi.ui.HistoryDetailActivity
 import personal.limi.ui.MainViewModel
 import personal.limi.ui.components.preference.PreferenceGroup
 import personal.limi.ui.components.preference.navigation
@@ -140,9 +142,19 @@ fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
                                 val timePart =
                                     history.datetime.substringAfter("T").substringBeforeLast(".")
                                 navigation(
-                                    title = timePart,
-                                    summary = history.processedUrl,
-                                    onClick = { /* TODO: 处理点击事件 */ })
+                                    title = timePart, 
+                                    summary = history.processedUrl, 
+                                    onClick = {
+                                        val intent = Intent(
+                                            context, HistoryDetailActivity::class.java
+                                        ).apply {
+                                            putExtra("history_id", history.id)
+                                            putExtra("history_origin_url", history.originUrl)
+                                            putExtra("history_processed_url", history.processedUrl)
+                                            putExtra("history_datetime", history.datetime)
+                                        }
+                                        context.startActivity(intent)
+                                    })
                             }
                         }
                     }

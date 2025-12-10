@@ -14,11 +14,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        setContent {
-            LimiTheme {
-                LimiApp()
-            }
-        }
+        setContent { LimiTheme(content = ::LimiApp) }
     }
 }
 

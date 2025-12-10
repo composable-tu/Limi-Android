@@ -1,6 +1,7 @@
 package personal.limi.utils.room
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
@@ -22,4 +23,7 @@ interface LimiHistoryDao {
 
     @Query("SELECT * FROM LimiHistoryEntity ORDER BY datetime DESC")
     suspend fun getAllSortedByDatetimeDesc(): List<LimiHistoryEntity>
+    
+    @Delete
+    suspend fun delete(item: LimiHistoryEntity)
 }
