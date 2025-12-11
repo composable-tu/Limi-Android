@@ -28,6 +28,7 @@ kotlin {
             implementation("androidx.core:core-splashscreen:1.2.0")
             implementation("androidx.activity:activity-ktx:1.12.1")
             implementation("androidx.browser:browser:1.9.0")
+            implementation("com.google.mlkit:barcode-scanning:17.3.0")
         }
         commonMain.dependencies {
             implementation(libs.runtime)

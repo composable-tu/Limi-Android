@@ -42,4 +42,5 @@
     <string name="confirm_delete_title">删除记录</string>
     <string name="confirm_delete_message">确定要删除这条历史记录吗？</string>
     <string name="open_source_license">开放源代码许可</string>
+    <string name="select_from_gallery">从图库选择</string>
 </resources>

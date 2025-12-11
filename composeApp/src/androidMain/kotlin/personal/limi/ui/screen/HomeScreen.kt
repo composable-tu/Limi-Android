@@ -2,6 +2,9 @@ package personal.limi.ui.screen
 
 import android.content.Intent
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -14,6 +17,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.outlined.AddPhotoAlternate
 import androidx.compose.material.icons.outlined.AllInclusive
 import androidx.compose.material.icons.outlined.DriveFileRenameOutline
 import androidx.compose.material.icons.outlined.QrCodeScanner
@@ -173,11 +177,12 @@ fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
 
             val fromText = stringResource(R.string.from_text)
             val scanQRCode = stringResource(R.string.scan_qrcode)
+            val selectFromGallery = stringResource(R.string.select_from_gallery)
 
             val items = listOf(
                 Icons.Outlined.DriveFileRenameOutline to fromText,
                 Icons.Outlined.QrCodeScanner to scanQRCode,
-                Icons.Outlined.AllInclusive to "TODO......"
+                Icons.Outlined.AddPhotoAlternate to selectFromGallery
             )
 
             var fabMenuExpanded by rememberSaveable { mutableStateOf(false) }
@@ -225,6 +230,11 @@ fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
                     }
                 },
             ) {
+                val pickMedia = rememberLauncherForActivityResult(
+                    ActivityResultContracts.PickVisualMedia()
+                ) { uri ->
+                    viewModel.startSelectFromGallery(context, uri)
+                }
                 items.forEachIndexed { i, item ->
                     FloatingActionButtonMenuItem(
                         modifier = Modifier
@@ -252,6 +262,7 @@ fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
                             when (item.second) {
                                 fromText -> viewModel.startSharePanel(context)
                                 scanQRCode -> viewModel.startScanQRCode(context)
+                                selectFromGallery -> pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
                             }
                         },
                         icon = { Icon(item.first, contentDescription = null) },

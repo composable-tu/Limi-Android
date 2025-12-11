@@ -2,6 +2,7 @@ package personal.limi.ui
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +17,7 @@ import personal.limi.ui.share_panel.SharePanelActivity
 import personal.limi.utils.asState
 import personal.limi.utils.datastore.DataStorePreferences
 import personal.limi.utils.room.LimiHistoryDao
+import personal.limi.utils.scanQRCodeFromImageUri
 import personal.limi.utils.startPlayBarcodeScanner
 
 class MainViewModel() : ViewModel() {
@@ -71,13 +73,34 @@ class MainViewModel() : ViewModel() {
         viewModelScope.launch(Dispatchers.Main) {
             try {
                 val result = withContext(Dispatchers.IO) { startPlayBarcodeScanner(context) }
-                if (result.isNotEmpty()) {
+                val intent = Intent(context, SharePanelActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        if (result.isNotEmpty()) result.joinToString("\n") else "扫码结果为空"
+                    )
+                }
+                context.startActivity(intent)
+            } catch (_: Exception) {
+            }
+        }
+    }
+
+    // TODO: 处理图片的逻辑迁移到 Share Panel 以支持图片分享
+    fun startSelectFromGallery(context: Context, imageUri: Uri?) {
+        if (imageUri != null) viewModelScope.launch(Dispatchers.Default) {
+            try {
+                val result = scanQRCodeFromImageUri(context, imageUri)
+                withContext(Dispatchers.Main) {
                     val intent = Intent(context, SharePanelActivity::class.java).apply {
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        putExtra(Intent.EXTRA_TEXT, result.joinToString("\n"))
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            if (result.isNotEmpty()) result.joinToString("\n") else "扫码结果为空"
+                        )
                     }
                     context.startActivity(intent)
-                } else throw Exception("扫码结果为空")
+                }
             } catch (_: Exception) {
             }
         }
