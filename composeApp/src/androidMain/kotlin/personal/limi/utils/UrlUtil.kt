@@ -1,10 +1,14 @@
 package personal.limi.utils
 
+import android.content.Context
+import android.net.Uri
+import androidx.browser.customtabs.CustomTabsIntent
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.get
 import io.ktor.http.Url
 import io.ktor.http.isSuccess
+
 
 /**
  * 获取重定向的 url
@@ -23,4 +27,9 @@ suspend fun getRedirectsUrl(url: Url): Url {
     } finally {
         client.close()
     }
+}
+
+fun Context.openUrl(url: String){
+    val intent = CustomTabsIntent.Builder().build()
+    intent.launchUrl(this, Uri.parse(url))
 }

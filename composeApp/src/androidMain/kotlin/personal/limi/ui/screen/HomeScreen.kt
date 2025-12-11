@@ -56,7 +56,6 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
@@ -85,10 +84,9 @@ import java.time.format.FormatStyle
 fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
     val listState = rememberLazyListState()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    val density = LocalDensity.current
     val fabVisible by remember {
         derivedStateOf {
-            listState.firstVisibleItemScrollOffset <= with(density) { 120.dp.toPx() }.toInt()
+            listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset <= 0
         }
     }
     val focusRequester = FocusRequester()
@@ -121,30 +119,25 @@ fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
             LazyColumn(
                 state = listState, modifier = Modifier.fillMaxSize()
             ) {
-                item {
-                    // 按日期分组显示历史记录
-                    val groupedHistory = historyList.groupBy {
-                        // 提取日期部分 (YYYY-MM-DD)
-                        it.datetime.substringBefore("T")
-                    }
+                // 按日期分组显示历史记录
+                val groupedHistory = historyList.groupBy {
+                    // 提取日期部分 (YYYY-MM-DD)
+                    it.datetime.substringBefore("T")
+                }
+                val locale = context.resources.configuration.locales[0]
 
-                    val context = LocalContext.current
-                    val locale = context.resources.configuration.locales[0]
-
-                    groupedHistory.forEach { (date, histories) ->
-                        val localDate = LocalDate.parse(date)
-                        val formatter =
-                            DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale)
-                        val formattedDate = Pangu.spacingText(localDate.format(formatter))
-
+                groupedHistory.forEach { (date, histories) ->
+                    val localDate = LocalDate.parse(date)
+                    val formatter =
+                        DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale)
+                    val formattedDate = Pangu.spacingText(localDate.format(formatter))
+                    item {
                         PreferenceGroup(title = formattedDate) {
                             histories.forEach { history ->
                                 val timePart =
                                     history.datetime.substringAfter("T").substringBeforeLast(".")
                                 navigation(
-                                    title = timePart, 
-                                    summary = history.processedUrl, 
-                                    onClick = {
+                                    title = timePart, summary = history.processedUrl, onClick = {
                                         val intent = Intent(
                                             context, HistoryDetailActivity::class.java
                                         ).apply {
@@ -158,8 +151,10 @@ fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
                             }
                         }
                     }
+                }
 
-                    if (historyList.isEmpty()) Box(
+                if (historyList.isEmpty()) item {
+                    Box(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(start = 16.dp, end = 16.dp, top = 64.dp, bottom = 64.dp),
@@ -170,8 +165,8 @@ fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                    } else Spacer(Modifier.height(8.dp))
-                }
+                    }
+                } else item { Spacer(Modifier.height(8.dp)) }
             }
 
             val fromText = stringResource(R.string.from_text)

@@ -1,5 +1,6 @@
 package personal.limi.ui.screen
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -29,6 +30,7 @@ import androidx.core.content.pm.PackageInfoCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import personal.limi.R
 import personal.limi.ui.MainViewModel
+import personal.limi.ui.OSSLicenseMenuActivity
 import personal.limi.ui.components.preference.PreferenceGroup
 import personal.limi.ui.components.preference.navigation
 import personal.limi.ui.components.preference.switch
@@ -42,8 +44,7 @@ object SettingIds {
 @Composable
 @Preview
 fun SettingScreen(
-    viewModel: MainViewModel = viewModel { MainViewModel() },
-    titleResId: Int = R.string.setting
+    viewModel: MainViewModel = viewModel { MainViewModel() }, titleResId: Int = R.string.setting
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val listState = rememberLazyListState()
@@ -78,7 +79,7 @@ fun SettingScreen(
         val useIntentFilter = stringResource(R.string.use_intent_filter)
         val useIntentFilterDesc = stringResource(R.string.use_intent_filter_desc)
         val useIntentFilterEnabled by viewModel.isUsedIntentFilter.collectAsState()
-
+        val openSourceLicense = stringResource(R.string.open_source_license)
         LazyColumn(
             state = listState, modifier = Modifier
                 .fillMaxSize()
@@ -101,6 +102,8 @@ fun SettingScreen(
                         checked = useIntentFilterEnabled,
                         onCheckedChange = { bool -> viewModel.setUsedIntentFilter(bool) })
                 }
+            }
+            item {
                 PreferenceGroup(stringResource(R.string.about)) {
                     navigation(
                         title = "关于 Limi",
@@ -108,10 +111,13 @@ fun SettingScreen(
                         showArrow = false,
                         onClick = {})
                     navigation(
-                        title = "开放源代码许可", onClick = {})
+                        title = openSourceLicense, onClick = {
+                            val intent = Intent(context, OSSLicenseMenuActivity::class.java)
+                            context.startActivity(intent)
+                        })
                 }
-                Spacer(Modifier.height(8.dp))
             }
+            item { Spacer(Modifier.height(8.dp)) }
         }
     }
 }

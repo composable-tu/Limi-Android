@@ -42,4 +42,5 @@
     <string name="delete">Delete</string>
     <string name="confirm_delete_title">Delete Record</string>
     <string name="confirm_delete_message">Are you sure you want to delete this history record?</string>
+    <string name="open_source_license">Open Source Licenses</string>
 </resources>

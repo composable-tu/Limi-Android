@@ -1,4 +1,5 @@
 [versions]
+aboutLibraries = "13.1.0"
 agp = "8.13.1"
 android-compileSdk = "36"
 android-minSdk = "31"
@@ -28,6 +29,8 @@ runtime = "1.10.0-rc02"
 kotlinx-datetime = "0.7.1-0.6.x-compat"
 
 [libraries]
+aboutlibraries-core = { module = "com.mikepenz:aboutlibraries-core", version.ref = "aboutLibraries" }
+aboutlibraries-compose-core = { module = "com.mikepenz:aboutlibraries-compose-core", version.ref = "aboutLibraries" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
@@ -58,6 +61,7 @@ ui-tooling-preview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", v
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
 [plugins]
+aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin.android", version.ref = "aboutLibraries" }
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 androidx-room = { id = "androidx.room", version.ref = "room" }

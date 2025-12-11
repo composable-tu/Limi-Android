@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidx.room)
+    alias(libs.plugins.aboutLibraries)
 }
 
 kotlin {
@@ -25,6 +26,8 @@ kotlin {
             implementation("com.google.android.gms:play-services-code-scanner:16.1.0")
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.2")
             implementation("androidx.core:core-splashscreen:1.2.0")
+            implementation("androidx.activity:activity-ktx:1.12.1")
+            implementation("androidx.browser:browser:1.9.0")
         }
         commonMain.dependencies {
             implementation(libs.runtime)
@@ -45,6 +48,8 @@ kotlin {
             implementation(libs.androidx.sqlite.bundled)
             implementation(libs.kotlinx.datetime)
             implementation("io.github.darkokoa:pangu:0.2.0")
+            implementation(libs.aboutlibraries.core)
+            implementation(libs.aboutlibraries.compose.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
