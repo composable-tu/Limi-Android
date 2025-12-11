@@ -7,11 +7,11 @@ import androidx.activity.enableEdgeToEdge
 import personal.limi.theme.LimiTheme
 import personal.limi.ui.screen.oss.OSSLicenseMenu
 
-class OSSLicenseMenuActivity: ComponentActivity() {
+class OSSLicenseMenuActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        setContent { LimiTheme(content = ::OSSLicenseMenu) }
+        setContent { LimiTheme { OSSLicenseMenu(onBack = { finish() }) } }
     }
 }

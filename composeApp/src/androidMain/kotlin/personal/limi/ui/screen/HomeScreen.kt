@@ -145,6 +145,8 @@ fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
                                             putExtra("history_origin_url", history.originUrl)
                                             putExtra("history_processed_url", history.processedUrl)
                                             putExtra("history_datetime", history.datetime)
+                                            flags =
+                                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                                         }
                                         context.startActivity(intent)
                                     })

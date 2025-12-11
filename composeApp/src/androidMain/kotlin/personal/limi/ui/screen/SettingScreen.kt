@@ -112,7 +112,10 @@ fun SettingScreen(
                         onClick = {})
                     navigation(
                         title = openSourceLicense, onClick = {
-                            val intent = Intent(context, OSSLicenseMenuActivity::class.java)
+                            val intent = Intent(context, OSSLicenseMenuActivity::class.java).apply {
+                                flags =
+                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            }
                             context.startActivity(intent)
                         })
                 }

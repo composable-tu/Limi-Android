@@ -33,6 +33,7 @@
 
         <activity android:name=".ui.HistoryDetailActivity" />
         <activity android:name=".ui.OSSLicenseMenuActivity" />
+        <activity android:name=".ui.OSSLicenseActivity" />
     </application>
 
 </manifest>

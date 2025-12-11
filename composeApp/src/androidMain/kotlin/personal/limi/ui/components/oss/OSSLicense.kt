@@ -167,11 +167,3 @@ fun LicenseItem(
     }
 }
 
-data class DeveloperInfo(
-    val name: String, val url: String?
-)
-
-data class LicenseInfo(
-    val name: String, val url: String?
-)
-
