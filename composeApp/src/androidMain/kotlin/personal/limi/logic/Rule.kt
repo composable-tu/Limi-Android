@@ -9,6 +9,8 @@ import personal.limi.logic.rules.bilibili.processBilibiliRedirectUrl
 import personal.limi.logic.rules.common.processCommonParams
 import personal.limi.logic.rules.common.processUTMParams
 import personal.limi.logic.rules.common.processUTMParamsEnhanced
+import personal.limi.logic.rules.x.processXNoParamsUrl
+import personal.limi.logic.rules.x.xNoParamsTargetHost
 import personal.limi.utils.datastore.DataStorePreferences
 
 object RuleIds {
@@ -16,6 +18,7 @@ object RuleIds {
     const val COMMON_PARAMS = "common_params_rules"
     const val UTM_PARAMS = "utm_params_rules"
     const val UTM_PARAMS_ENHANCED = "utm_params_enhanced_rules"
+    const val X = "x_rules"
 }
 
 suspend fun processUrl(urlString: String): String {
@@ -24,7 +27,8 @@ suspend fun processUrl(urlString: String): String {
         commonParams = DataStorePreferences.getBoolean(RuleIds.COMMON_PARAMS, true),
         UTMParams = DataStorePreferences.getBoolean(RuleIds.UTM_PARAMS, true),
         UTMParamsEnhanced = DataStorePreferences.getBoolean(RuleIds.UTM_PARAMS_ENHANCED, false),
-        bilibili = DataStorePreferences.getBoolean(RuleIds.BILIBILI, true)
+        bilibili = DataStorePreferences.getBoolean(RuleIds.BILIBILI, true),
+        x = DataStorePreferences.getBoolean(RuleIds.X, true)
     )
 
     var finalUrl = Url(urlString)
@@ -36,6 +40,10 @@ suspend fun processUrl(urlString: String): String {
         )
 
         ruleConfig.bilibili && finalUrl.host.lowercase() in bilibiliNoParamsTargetHost -> processBilibiliNoParamsUrl(
+            finalUrl
+        )
+
+        ruleConfig.x && finalUrl.host.lowercase() in xNoParamsTargetHost -> processXNoParamsUrl(
             finalUrl
         )
 

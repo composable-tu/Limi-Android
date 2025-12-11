@@ -78,13 +78,19 @@ fun RuleScreen(
         val bilibiliRuleTitle = stringResource(R.string.bilibili_rule)
         val bilibiliRuleDesc = stringResource(R.string.bilibili_rule_desc)
         val bilibiliRuleEnabled by viewModel.isBilibiliRuleEnabled.collectAsState()
-
+        val xRuleTitle = stringResource(R.string.x_rule)
+        val xRuleEnable by viewModel.isXRuleEnabled.collectAsState()
         val exceptionalRulesList = listOf(
             SwitchPreferenceItem(
                 title = bilibiliRuleTitle,
                 summary = bilibiliRuleDesc,
                 checked = bilibiliRuleEnabled,
-                onCheckedChange = { bool -> viewModel.setBilibiliRuleEnabled(bool) })
+                onCheckedChange = { bool -> viewModel.setBilibiliRuleEnabled(bool) }),
+            SwitchPreferenceItem(
+                title = xRuleTitle,
+                checked = xRuleEnable,
+                onCheckedChange = { bool -> viewModel.setXRuleEnabled(bool) }
+            )
         )
         LazyColumn(
             state = listState, modifier = Modifier
@@ -126,7 +132,7 @@ fun RuleScreen(
 
 data class SwitchPreferenceItem(
     val title: String,
-    val summary: String,
+    val summary: String? = null,
     val checked: Boolean,
     val onCheckedChange: (Boolean) -> Unit
 )

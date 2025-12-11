@@ -34,6 +34,8 @@ class MainViewModel() : ViewModel() {
             .asState(viewModelScope, false)
     val isBilibiliRuleEnabled =
         DataStorePreferences.getBooleanFlow(RuleIds.BILIBILI, true).asState(viewModelScope, true)
+    val isXRuleEnabled = DataStorePreferences.getBooleanFlow(RuleIds.X, true)
+        .asState(viewModelScope, true)
 
     fun setCommonParamsRuleEnabled(bool: Boolean) =
         DataStorePreferences.putBooleanSync(RuleIds.COMMON_PARAMS, bool)
@@ -46,6 +48,9 @@ class MainViewModel() : ViewModel() {
 
     fun setBilibiliRuleEnabled(bool: Boolean) =
         DataStorePreferences.putBooleanSync(RuleIds.BILIBILI, bool)
+
+    fun setXRuleEnabled(bool: Boolean) =
+        DataStorePreferences.putBooleanSync(RuleIds.X, bool)
 
     val isIncreognitoModeEnabled =
         DataStorePreferences.getBooleanFlow(SettingIds.INCOGNITO_MODE, false)

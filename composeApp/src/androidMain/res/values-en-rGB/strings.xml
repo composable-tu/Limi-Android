@@ -45,4 +45,5 @@
     <string name="open_source_license">Open Source Licenses</string>
     <string name="select_from_gallery">Select from Gallery</string>
     <string name="no_qr_code_found">No QR codes found in the image.</string>
+    <string name="x_rule">X (formerly Twitter)</string>
 </resources>
