@@ -16,7 +16,7 @@
     <string name="cancel">Cancel</string>
     <string name="add">Add</string>
     <string name="from_text">From Text</string>
-    <string name="discard">Discard</string>
+    <string name="discard_and_back">Discard &amp; Back</string>
     <string name="scan_qrcode">Scan QRCode</string>
     <string name="bilibili_rule">Bilibili</string>
     <string name="bilibili_rule_desc">Restore b23.tv short chain to original link</string>
@@ -44,4 +44,5 @@
     <string name="confirm_delete_message">Are you sure you want to delete this history record?</string>
     <string name="open_source_license">Open Source Licenses</string>
     <string name="select_from_gallery">Select from Gallery</string>
+    <string name="no_qr_code_found">No QR codes found in the image.</string>
 </resources>

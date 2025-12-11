@@ -182,13 +182,13 @@ private fun EditingContent(
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Close,
-                    contentDescription = stringResource(R.string.discard),
+                    contentDescription = stringResource(R.string.discard_and_back),
                     modifier = Modifier.size(
                         ButtonDefaults.IconSize
                     )
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text(stringResource(R.string.discard))
+                Text(stringResource(R.string.discard_and_back))
             }
             FilledTonalButton(
                 modifier = Modifier

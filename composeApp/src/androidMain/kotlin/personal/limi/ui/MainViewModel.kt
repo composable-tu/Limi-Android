@@ -17,7 +17,6 @@ import personal.limi.ui.share_panel.SharePanelActivity
 import personal.limi.utils.asState
 import personal.limi.utils.datastore.DataStorePreferences
 import personal.limi.utils.room.LimiHistoryDao
-import personal.limi.utils.scanQRCodeFromImageUri
 import personal.limi.utils.startPlayBarcodeScanner
 
 class MainViewModel() : ViewModel() {
@@ -86,23 +85,15 @@ class MainViewModel() : ViewModel() {
         }
     }
 
-    // TODO: 处理图片的逻辑迁移到 Share Panel 以支持图片分享
     fun startSelectFromGallery(context: Context, imageUri: Uri?) {
-        if (imageUri != null) viewModelScope.launch(Dispatchers.Default) {
-            try {
-                val result = scanQRCodeFromImageUri(context, imageUri)
-                withContext(Dispatchers.Main) {
-                    val intent = Intent(context, SharePanelActivity::class.java).apply {
-                        flags = Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        putExtra(
-                            Intent.EXTRA_TEXT,
-                            if (result.isNotEmpty()) result.joinToString("\n") else "扫码结果为空"
-                        )
-                    }
-                    context.startActivity(intent)
-                }
-            } catch (_: Exception) {
+        if (imageUri != null) {
+            val intent = Intent(context, SharePanelActivity::class.java).apply {
+                action = Intent.ACTION_SEND
+                type = "image/*"
+                putExtra(Intent.EXTRA_STREAM, imageUri)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
+            context.startActivity(intent)
         }
     }
 }

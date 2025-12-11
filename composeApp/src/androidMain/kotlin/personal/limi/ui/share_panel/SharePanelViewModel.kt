@@ -2,6 +2,7 @@ package personal.limi.ui.share_panel
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -23,6 +24,7 @@ import personal.limi.ui.screen.SettingIds
 import personal.limi.utils.datastore.DataStorePreferences
 import personal.limi.utils.extractUrlList
 import personal.limi.utils.room.LimiHistoryDao
+import personal.limi.utils.scanQRCodeFromImageUri
 import personal.limi.utils.textCopyThenPost
 import personal.limi.utils.textShare
 
@@ -65,6 +67,36 @@ class SharePanelViewModel : ViewModel() {
         if (isEditingMode) isEditing = true else {
             originalText = text
             context.processText(text)
+        }
+    }
+
+    /**
+     * 初始化并开始处理图片中的二维码
+     * @param imageUri 图片 URI
+     */
+    fun initializeWithImage(context: Context, imageUri: Uri) {
+        isProcessing = true
+        isEmpty = false
+        isNotHasUrls = false
+        isError = false
+        isEditing = false
+        
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val qrCodeResults = scanQRCodeFromImageUri(context, imageUri)
+                val resultText = if (qrCodeResults.isNotEmpty()) qrCodeResults.joinToString("\n") else context.getString(R.string.no_qr_code_found)
+                
+                launch(Dispatchers.Main) {
+                    originalText = resultText
+                    context.processText(resultText)
+                }
+            } catch (e: Exception) {
+                launch(Dispatchers.Main) {
+                    isProcessing = false
+                    isError = true
+                    processedText = context.getString(R.string.processing_error, e.message)
+                }
+            }
         }
     }
 

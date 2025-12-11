@@ -1,6 +1,7 @@
 package personal.limi.ui.share_panel
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,6 +18,7 @@ class SharePanelActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)?.ifBlank { null }
+        val sharedImageUri = intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)
         val isLaunchedFromShare = isLaunchedFromShareIntent(intent)
 
         setContent {
@@ -28,6 +30,8 @@ class SharePanelActivity : ComponentActivity() {
                     if (!sharedText.isNullOrBlank()) {
                         val sharedText = intent.getStringExtra(Intent.EXTRA_TEXT)
                         viewModel.initializeWithText(this@SharePanelActivity, sharedText)
+                    } else if (sharedImageUri != null) {
+                        viewModel.initializeWithImage(this@SharePanelActivity, sharedImageUri)
                     } else if (!isLaunchedFromShare) viewModel.initializeWithText(
                         this@SharePanelActivity, isEditingMode = true
                     )
