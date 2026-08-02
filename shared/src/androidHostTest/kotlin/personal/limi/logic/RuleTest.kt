@@ -28,6 +28,11 @@ class RuleTest {
     }
 
     @Test
+    fun schemeLessSingleLabelHostWithPortGetsHttpPrefix() {
+        assertEquals("http://intranet:8080", ensureUrlScheme("intranet:8080"))
+    }
+
+    @Test
     fun httpUrlKept() {
         assertEquals("http://a.com/x", ensureUrlScheme("http://a.com/x"))
     }
@@ -40,6 +45,21 @@ class RuleTest {
     @Test
     fun mailtoKept() {
         assertEquals("mailto:user@example.com", ensureUrlScheme("mailto:user@example.com"))
+    }
+
+    @Test
+    fun customSchemeWithSlashSlashKept() {
+        assertEquals("taobao://item.htm?id=1", ensureUrlScheme("taobao://item.htm?id=1"))
+    }
+
+    @Test
+    fun customSchemeDeepLinkKept() {
+        assertEquals("myapp:deep/path", ensureUrlScheme("myapp:deep/path"))
+    }
+
+    @Test
+    fun customSchemeWithActionKept() {
+        assertEquals("customapp:action?param=1", ensureUrlScheme("customapp:action?param=1"))
     }
 
     @Test

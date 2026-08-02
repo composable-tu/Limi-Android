@@ -37,10 +37,6 @@ object RuleIds {
 
 private val URL_SCHEME_REGEX = Regex("^[a-zA-Z][a-zA-Z0-9+.-]*")
 private val SCHEME_PREFIX_REGEX = Regex("^[a-zA-Z][a-zA-Z0-9+.-]*:(//)?")
-private val KNOWN_URL_SCHEMES = setOf(
-    "http", "https", "ftp", "ftps", "mailto", "tel", "file", "data", "about",
-    "ws", "wss", "sms", "ssh", "git", "chrome", "intent"
-)
 
 /**
  * 判断链接是否自带协议头
@@ -50,7 +46,17 @@ internal fun hasUrlScheme(urlString: String): Boolean {
     if (colonIndex <= 0) return false
     val candidate = urlString.substring(0, colonIndex)
     if (!URL_SCHEME_REGEX.matches(candidate)) return false
-    return candidate in KNOWN_URL_SCHEMES || urlString.startsWith("$candidate://")
+    // 排除 host:port 误判（如 a.com:8080）：合法 scheme 不含 "."
+    if (candidate.contains('.')) return false
+    // localhost 是唯一常见的无 "." hostname
+    if (candidate.lowercase() == "localhost") return false
+    // host:port 误判（如 intranet:8080）：冒号后是纯数字端口时视为 host:port
+    val port = urlString.substring(colonIndex + 1)
+        .substringBefore('/')
+        .substringBefore('?')
+        .substringBefore('#')
+    if (port.isNotEmpty() && port.all { it.isDigit() }) return false
+    return true
 }
 
 /**
