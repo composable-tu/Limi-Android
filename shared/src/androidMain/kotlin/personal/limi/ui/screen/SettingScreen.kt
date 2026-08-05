@@ -27,8 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
-import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.stringResource
 import limi.shared.generated.resources.Res
 import limi.shared.generated.resources.about
 import limi.shared.generated.resources.about_limi
@@ -41,6 +39,8 @@ import limi.shared.generated.resources.open_source_repo
 import limi.shared.generated.resources.setting
 import limi.shared.generated.resources.use_intent_filter
 import limi.shared.generated.resources.use_intent_filter_desc
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 import personal.limi.ui.MainViewModel
 import personal.limi.ui.OSSLicenseMenuActivity
 import personal.limi.ui.components.preference.PreferenceGroup
@@ -49,8 +49,8 @@ import personal.limi.ui.components.preference.switch
 import personal.limi.utils.openUrl
 
 object SettingIds {
-    const val INCOGNITO_MODE = "incognito_mode"
-    const val USE_INTENT_FILTER = "use_intent_filter"
+  const val INCOGNITO_MODE = "incognito_mode"
+  const val USE_INTENT_FILTER = "use_intent_filter"
 }
 
 private const val OPEN_SOURCE_REPO_URL = "https://github.com/limi-app/Limi-Android"
@@ -59,90 +59,101 @@ private const val OPEN_SOURCE_REPO_URL = "https://github.com/limi-app/Limi-Andro
 @Composable
 @Preview
 fun SettingScreen(
-    viewModel: MainViewModel = viewModel { MainViewModel() }, titleResId: StringResource = Res.string.setting
+  viewModel: MainViewModel = viewModel { MainViewModel() },
+  titleResId: StringResource = Res.string.setting,
 ) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val listState = rememberLazyListState()
-    val layoutDirection = LocalLayoutDirection.current
-    val context = LocalContext.current
-    val appVersion by produceState(initialValue = "") {
-        value = try {
-            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-            val versionName = packageInfo.versionName
-            val versionCode = PackageInfoCompat.getLongVersionCode(packageInfo)
-            "v$versionName ($versionCode)"
+  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+  val listState = rememberLazyListState()
+  val layoutDirection = LocalLayoutDirection.current
+  val context = LocalContext.current
+  val appVersion by
+    produceState(initialValue = "") {
+      value =
+        try {
+          val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+          val versionName = packageInfo.versionName
+          val versionCode = PackageInfoCompat.getLongVersionCode(packageInfo)
+          "v$versionName ($versionCode)"
         } catch (_: Exception) {
-            "Unknown"
+          "Unknown"
         }
     }
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            TopAppBar(
-                title = { Text(text = stringResource(titleResId)) },
-                scrollBehavior = scrollBehavior,
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer
-                )
-            )
-        },
-    ) { innerPadding ->
-        val increognitoMode = stringResource(Res.string.incognito_mode)
-        val increognitoModeDesc = stringResource(Res.string.incognito_mode_desc)
-        val increognitoModeEnabled by viewModel.isIncreognitoModeEnabled.collectAsState()
-        val useIntentFilter = stringResource(Res.string.use_intent_filter)
-        val useIntentFilterDesc = stringResource(Res.string.use_intent_filter_desc)
-        val useIntentFilterEnabled by viewModel.isUsedIntentFilter.collectAsState()
-        val openSourceLicense = stringResource(Res.string.open_source_license)
-        LazyColumn(
-            state = listState, modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    start = innerPadding.calculateStartPadding(layoutDirection),
-                    end = innerPadding.calculateEndPadding(layoutDirection),
-                    top = innerPadding.calculateTopPadding(),
-                )
-        ) {
-            item {
-                PreferenceGroup(stringResource(Res.string.general)) {
-                    switch(
-                        title = increognitoMode,
-                        summary = increognitoModeDesc,
-                        checked = increognitoModeEnabled,
-                        onCheckedChange = { bool -> viewModel.setIncognitoModeEnabled(bool) })
-                    switch(
-                        title = useIntentFilter,
-                        summary = useIntentFilterDesc,
-                        checked = useIntentFilterEnabled,
-                        onCheckedChange = { bool -> viewModel.setUsedIntentFilter(bool) })
-                }
-            }
-            item {
-                val aboutLimi = stringResource(Res.string.about_limi)
-                val aboutLimiVersion = stringResource(Res.string.about_limi_version, appVersion)
-                val openSourceRepo = stringResource(Res.string.open_source_repo)
-                PreferenceGroup(stringResource(Res.string.about)) {
-                    navigation(
-                        title = aboutLimi,
-                        summary = aboutLimiVersion,
-                        showArrow = false,
-                        onClick = {})
-                    navigation(
-                        title = openSourceRepo,
-                        summary = OPEN_SOURCE_REPO_URL,
-                        onClick = { context.openUrl(OPEN_SOURCE_REPO_URL) })
-                    navigation(
-                        title = openSourceLicense, onClick = {
-                            val intent = Intent(context, OSSLicenseMenuActivity::class.java).apply {
-                                flags =
-                                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                            }
-                            context.startActivity(intent)
-                        })
-                }
-            }
-            item { Spacer(Modifier.height(8.dp)) }
+  Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    topBar = {
+      TopAppBar(
+        title = { Text(text = stringResource(titleResId)) },
+        scrollBehavior = scrollBehavior,
+        colors =
+          TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
+          ),
+      )
+    },
+  ) { innerPadding ->
+    val increognitoMode = stringResource(Res.string.incognito_mode)
+    val increognitoModeDesc = stringResource(Res.string.incognito_mode_desc)
+    val increognitoModeEnabled by viewModel.isIncreognitoModeEnabled.collectAsState()
+    val useIntentFilter = stringResource(Res.string.use_intent_filter)
+    val useIntentFilterDesc = stringResource(Res.string.use_intent_filter_desc)
+    val useIntentFilterEnabled by viewModel.isUsedIntentFilter.collectAsState()
+    val openSourceLicense = stringResource(Res.string.open_source_license)
+    LazyColumn(
+      state = listState,
+      modifier =
+        Modifier.fillMaxSize()
+          .padding(
+            start = innerPadding.calculateStartPadding(layoutDirection),
+            end = innerPadding.calculateEndPadding(layoutDirection),
+            top = innerPadding.calculateTopPadding(),
+          ),
+    ) {
+      item {
+        PreferenceGroup(stringResource(Res.string.general)) {
+          switch(
+            title = increognitoMode,
+            summary = increognitoModeDesc,
+            checked = increognitoModeEnabled,
+            onCheckedChange = { bool -> viewModel.setIncognitoModeEnabled(bool) },
+          )
+          switch(
+            title = useIntentFilter,
+            summary = useIntentFilterDesc,
+            checked = useIntentFilterEnabled,
+            onCheckedChange = { bool -> viewModel.setUsedIntentFilter(bool) },
+          )
         }
+      }
+      item {
+        val aboutLimi = stringResource(Res.string.about_limi)
+        val aboutLimiVersion = stringResource(Res.string.about_limi_version, appVersion)
+        val openSourceRepo = stringResource(Res.string.open_source_repo)
+        PreferenceGroup(stringResource(Res.string.about)) {
+          navigation(
+            title = aboutLimi,
+            summary = aboutLimiVersion,
+            showArrow = false,
+            onClick = {},
+          )
+          navigation(
+            title = openSourceRepo,
+            summary = OPEN_SOURCE_REPO_URL,
+            onClick = { context.openUrl(OPEN_SOURCE_REPO_URL) },
+          )
+          navigation(
+            title = openSourceLicense,
+            onClick = {
+              val intent =
+                Intent(context, OSSLicenseMenuActivity::class.java).apply {
+                  flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                }
+              context.startActivity(intent)
+            },
+          )
+        }
+      }
+      item { Spacer(Modifier.height(8.dp)) }
     }
+  }
 }
