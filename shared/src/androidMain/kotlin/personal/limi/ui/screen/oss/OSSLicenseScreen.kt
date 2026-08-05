@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.Link
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -54,8 +53,10 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 import personal.limi.utils.openUrl
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class,
-    ExperimentalMaterial3ExpressiveApi::class
+@OptIn(
+  ExperimentalMaterial3Api::class,
+  ExperimentalResourceApi::class,
+  ExperimentalMaterial3ExpressiveApi::class,
 )
 @Composable
 fun OSSLicense(uniqueId: String, finish: () -> Unit) {
