@@ -400,10 +400,11 @@ private fun UrlCard(
         modifier = Modifier.fillMaxWidth().padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
       ) {
-        Icon(
-          imageVector = Icons.Outlined.ContentCopy,
-          contentDescription = url,
-          modifier = Modifier.padding(end = 4.dp).size(ButtonDefaults.IconSize),
+        OutlinedSymbol(
+          icon = MaterialSymbols.CONTENT_COPY,
+          size = ButtonDefaults.IconSize,
+          weight = FontWeight.Normal,
+          modifier = Modifier.padding(end = 4.dp)
         )
         Text(
           text = url,
