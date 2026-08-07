@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ContainedLoadingIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LoadingIndicator
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -209,8 +211,13 @@ fun RuleScreen(
           ),
         actions = {
           if (cloudRulesEnabled) {
-            IconButton(onClick = { viewModel.syncCloudRules() }, enabled = !isSyncing) {
-              if (!isSyncing) OutlinedSymbol(icon = MaterialSymbols.SYNC) else LoadingIndicator()
+            IconButton(
+              onClick = { viewModel.syncCloudRules() },
+              shapes = IconButtonDefaults.shapes(),
+              enabled = !isSyncing,
+            ) {
+              if (!isSyncing) OutlinedSymbol(icon = MaterialSymbols.SYNC)
+              else ContainedLoadingIndicator()
             }
           }
         },
@@ -280,7 +287,10 @@ fun RuleScreen(
         )
       },
       confirmButton = {
-        TextButton(onClick = { viewModel.dismissCloudRulesSyncError() }) {
+        TextButton(
+          onClick = { viewModel.dismissCloudRulesSyncError() },
+          shapes = ButtonDefaults.shapes(),
+        ) {
           Text(text = stringResource(Res.string.confirm))
         }
       },

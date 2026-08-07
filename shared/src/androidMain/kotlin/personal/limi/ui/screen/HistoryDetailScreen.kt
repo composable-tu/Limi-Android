@@ -15,9 +15,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -78,13 +80,14 @@ fun HistoryDetailScreen(
               showDialog = false
               onBack()
             }
-          }
+          },
+          shapes = ButtonDefaults.shapes(),
         ) {
           Text(text = stringResource(Res.string.confirm))
         }
       },
       dismissButton = {
-        TextButton(onClick = { showDialog = false }) {
+        TextButton(onClick = { showDialog = false }, shapes = ButtonDefaults.shapes()) {
           Text(text = stringResource(Res.string.cancel))
         }
       },
@@ -103,7 +106,7 @@ fun HistoryDetailScreen(
             scrolledContainerColor = MaterialTheme.colorScheme.surfaceContainer,
           ),
         navigationIcon = {
-          IconButton(onClick = onBack) {
+          IconButton(onClick = onBack, shapes = IconButtonDefaults.shapes()) {
             Icon(
               imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
               contentDescription = stringResource(Res.string.back),
@@ -111,7 +114,7 @@ fun HistoryDetailScreen(
           }
         },
         actions = {
-          IconButton(onClick = { showDialog = true }) {
+          IconButton(onClick = { showDialog = true }, shapes = IconButtonDefaults.shapes()) {
             Icon(
               imageVector = Icons.Outlined.Delete,
               contentDescription = stringResource(Res.string.delete),

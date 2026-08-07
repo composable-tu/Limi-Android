@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -188,6 +189,7 @@ private fun EditingContent(
     ) {
       FilledTonalButton(
         modifier = Modifier.weight(1f).padding(end = 8.dp),
+        shapes = ButtonDefaults.shapes(),
         onClick = {
           focusManager.clearFocus()
           onCancel()
@@ -203,8 +205,9 @@ private fun EditingContent(
         Spacer(Modifier.size(ButtonDefaults.IconSpacing))
         Text(stringResource(Res.string.discard_and_back))
       }
-      FilledTonalButton(
+      Button(
         modifier = Modifier.weight(1f).padding(start = 8.dp),
+        shapes = ButtonDefaults.shapes(),
         onClick = {
           focusManager.clearFocus()
           onConfirm()
@@ -269,9 +272,10 @@ private fun EditCard(onClick: () -> Unit) {
       verticalAlignment = Alignment.CenterVertically,
     ) {
       OutlinedSymbol(
-        icon = MaterialSymbols.KEYBOARD_ARROW_LEFT,
+        icon = MaterialSymbols.ARROW_BACK_IOS_NEW,
+        size = ButtonDefaults.ExtraSmallIconSize * 0.8f,
         weight = FontWeight.Normal,
-        modifier = Modifier.padding(end = 4.dp),
+        modifier = Modifier.padding(end = 3.dp),
       )
       Text(
         text = stringResource(Res.string.edit_original_text),
@@ -425,6 +429,7 @@ private fun ActionButtonsRow(
   ) {
     FilledTonalButton(
       modifier = Modifier.weight(1f).padding(end = 8.dp),
+      shapes = ButtonDefaults.shapes(),
       onClick = onShare,
       enabled = isEnabled,
       contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
@@ -439,6 +444,7 @@ private fun ActionButtonsRow(
     }
     FilledTonalButton(
       modifier = Modifier.weight(1f).padding(start = 8.dp),
+      shapes = ButtonDefaults.shapes(),
       onClick = onCopy,
       enabled = isEnabled,
       contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
