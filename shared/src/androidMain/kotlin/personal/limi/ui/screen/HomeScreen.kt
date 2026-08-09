@@ -83,8 +83,8 @@ import limi.shared.generated.resources.select_from_gallery
 import org.jetbrains.compose.resources.stringResource
 import personal.limi.ui.HistoryDetailActivity
 import personal.limi.ui.MainViewModel
-import personal.limi.ui.components.preference.PreferenceGroup
 import personal.limi.ui.components.preference.navigation
+import personal.limi.ui.components.preference.preferenceLazyGroup
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -140,30 +140,28 @@ fun HomeScreen(viewModel: MainViewModel = viewModel { MainViewModel() }) {
           val localDate = LocalDate.parse(date)
           val formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale)
           val formattedDate = Pangu.spacingText(localDate.format(formatter))
-          item {
-            PreferenceGroup(title = formattedDate) {
-              histories.forEach { history ->
-                val timePart = history.datetime.substringAfter("T").substringBeforeLast(".")
-                navigation(
-                  title = timePart,
-                  summary = history.processedUrl,
-                  onClick = {
-                    val intent =
-                      Intent(
-                          context,
-                          HistoryDetailActivity::class.java,
-                        )
-                        .apply {
-                          putExtra("history_id", history.id)
-                          putExtra("history_origin_url", history.originUrl)
-                          putExtra("history_processed_url", history.processedUrl)
-                          putExtra("history_datetime", history.datetime)
-                          flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        }
-                    context.startActivity(intent)
-                  },
-                )
-              }
+          preferenceLazyGroup(title = formattedDate) {
+            histories.forEach { history ->
+              val timePart = history.datetime.substringAfter("T").substringBeforeLast(".")
+              navigation(
+                title = timePart,
+                summary = history.processedUrl,
+                onClick = {
+                  val intent =
+                    Intent(
+                        context,
+                        HistoryDetailActivity::class.java,
+                      )
+                      .apply {
+                        putExtra("history_id", history.id)
+                        putExtra("history_origin_url", history.originUrl)
+                        putExtra("history_processed_url", history.processedUrl)
+                        putExtra("history_datetime", history.datetime)
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                      }
+                  context.startActivity(intent)
+                },
+              )
             }
           }
         }

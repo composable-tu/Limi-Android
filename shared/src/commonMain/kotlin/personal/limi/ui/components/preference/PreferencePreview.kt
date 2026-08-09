@@ -1,11 +1,9 @@
 package personal.limi.ui.components.preference
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Bluetooth
@@ -46,9 +44,9 @@ fun Android16SettingsScreen() {
       )
     },
   ) { padding ->
-    Column(modifier = Modifier.padding(padding).verticalScroll(rememberScrollState())) {
+    LazyColumn(modifier = Modifier.padding(padding)) {
       // Group 1: Connectivity (演示 Top/Middle/Bottom 逻辑)
-      PreferenceGroup(title = "Connectivity") {
+      preferenceLazyGroup(title = "Connectivity") {
         // Top: 上大圆角，下小圆角
         switch(
           title = "Internet",
@@ -77,7 +75,7 @@ fun Android16SettingsScreen() {
       }
 
       // Group 2: Device Info (演示 Input 和 Single)
-      PreferenceGroup(title = "Device") {
+      preferenceLazyGroup(title = "Device") {
         // 如果只有一个 Item，会自动变成全大圆角
         input(
           title = "Device Name",
@@ -88,7 +86,7 @@ fun Android16SettingsScreen() {
       }
 
       // Group 3: Sound (演示 Slider 和 Navigation)
-      PreferenceGroup(title = "Sound & Vibration") {
+      preferenceLazyGroup(title = "Sound & Vibration") {
         slider(
           title = "Media Volume",
           value = volume,
@@ -104,7 +102,7 @@ fun Android16SettingsScreen() {
         )
       }
 
-      Spacer(modifier = Modifier.height(32.dp))
+      item { Spacer(modifier = Modifier.height(32.dp)) }
     }
   }
 }

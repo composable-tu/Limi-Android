@@ -1,7 +1,6 @@
 package personal.limi.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -14,7 +13,6 @@ class OSSLicenseActivity : ComponentActivity() {
     super.onCreate(savedInstanceState)
 
     val uniqueId = intent.getStringExtra("library")
-    Log.i("11", uniqueId ?: "")
     if (uniqueId == null) {
       finish()
       return

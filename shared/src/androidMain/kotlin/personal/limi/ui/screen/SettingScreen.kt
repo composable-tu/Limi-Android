@@ -43,8 +43,8 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import personal.limi.ui.MainViewModel
 import personal.limi.ui.OSSLicenseMenuActivity
-import personal.limi.ui.components.preference.PreferenceGroup
 import personal.limi.ui.components.preference.navigation
+import personal.limi.ui.components.preference.preferenceLazyGroup
 import personal.limi.ui.components.preference.switch
 import personal.limi.utils.openUrl
 
@@ -99,6 +99,11 @@ fun SettingScreen(
     val useIntentFilterDesc = stringResource(Res.string.use_intent_filter_desc)
     val useIntentFilterEnabled by viewModel.isUsedIntentFilter.collectAsState()
     val openSourceLicense = stringResource(Res.string.open_source_license)
+    val generalTitle = stringResource(Res.string.general)
+    val aboutTitle = stringResource(Res.string.about)
+    val aboutLimi = stringResource(Res.string.about_limi)
+    val aboutLimiVersion = stringResource(Res.string.about_limi_version, appVersion)
+    val openSourceRepo = stringResource(Res.string.open_source_repo)
     LazyColumn(
       state = listState,
       modifier =
@@ -109,49 +114,42 @@ fun SettingScreen(
             top = innerPadding.calculateTopPadding(),
           ),
     ) {
-      item {
-        PreferenceGroup(stringResource(Res.string.general)) {
-          switch(
-            title = increognitoMode,
-            summary = increognitoModeDesc,
-            checked = increognitoModeEnabled,
-            onCheckedChange = { bool -> viewModel.setIncognitoModeEnabled(bool) },
-          )
-          switch(
-            title = useIntentFilter,
-            summary = useIntentFilterDesc,
-            checked = useIntentFilterEnabled,
-            onCheckedChange = { bool -> viewModel.setUsedIntentFilter(bool) },
-          )
-        }
+      preferenceLazyGroup(generalTitle) {
+        switch(
+          title = increognitoMode,
+          summary = increognitoModeDesc,
+          checked = increognitoModeEnabled,
+          onCheckedChange = { bool -> viewModel.setIncognitoModeEnabled(bool) },
+        )
+        switch(
+          title = useIntentFilter,
+          summary = useIntentFilterDesc,
+          checked = useIntentFilterEnabled,
+          onCheckedChange = { bool -> viewModel.setUsedIntentFilter(bool) },
+        )
       }
-      item {
-        val aboutLimi = stringResource(Res.string.about_limi)
-        val aboutLimiVersion = stringResource(Res.string.about_limi_version, appVersion)
-        val openSourceRepo = stringResource(Res.string.open_source_repo)
-        PreferenceGroup(stringResource(Res.string.about)) {
-          navigation(
-            title = aboutLimi,
-            summary = aboutLimiVersion,
-            showArrow = false,
-            onClick = {},
-          )
-          navigation(
-            title = openSourceRepo,
-            summary = OPEN_SOURCE_REPO_URL,
-            onClick = { context.openUrl(OPEN_SOURCE_REPO_URL) },
-          )
-          navigation(
-            title = openSourceLicense,
-            onClick = {
-              val intent =
-                Intent(context, OSSLicenseMenuActivity::class.java).apply {
-                  flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                }
-              context.startActivity(intent)
-            },
-          )
-        }
+      preferenceLazyGroup(aboutTitle) {
+        navigation(
+          title = aboutLimi,
+          summary = aboutLimiVersion,
+          showArrow = false,
+          onClick = {},
+        )
+        navigation(
+          title = openSourceRepo,
+          summary = OPEN_SOURCE_REPO_URL,
+          onClick = { context.openUrl(OPEN_SOURCE_REPO_URL) },
+        )
+        navigation(
+          title = openSourceLicense,
+          onClick = {
+            val intent =
+              Intent(context, OSSLicenseMenuActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+              }
+            context.startActivity(intent)
+          },
+        )
       }
       item { Spacer(Modifier.height(8.dp)) }
     }

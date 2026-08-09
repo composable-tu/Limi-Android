@@ -63,7 +63,7 @@ import limi.shared.generated.resources.utm_rule_desc
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import personal.limi.ui.MainViewModel
-import personal.limi.ui.components.preference.PreferenceGroup
+import personal.limi.ui.components.preference.preferenceLazyGroup
 import personal.limi.ui.components.preference.switch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -224,6 +224,9 @@ fun RuleScreen(
       )
     },
   ) { innerPadding ->
+    val localRulesGroupTitle = stringResource(Res.string.local_rules_group)
+    val cloudRulesGroupTitle = stringResource(Res.string.cloud_rules_group)
+    val exceptionalRulesGroupTitle = stringResource(Res.string.exceptional_rules_group)
     LazyColumn(
       state = listState,
       modifier =
@@ -234,40 +237,34 @@ fun RuleScreen(
             top = innerPadding.calculateTopPadding(),
           ),
     ) {
-      item {
-        PreferenceGroup(stringResource(Res.string.local_rules_group)) {
-          localRulesList.forEach { item ->
-            switch(
-              title = item.title,
-              summary = item.summary,
-              checked = item.checked,
-              onCheckedChange = item.onCheckedChange,
-            )
-          }
+      preferenceLazyGroup(localRulesGroupTitle) {
+        localRulesList.forEach { item ->
+          switch(
+            title = item.title,
+            summary = item.summary,
+            checked = item.checked,
+            onCheckedChange = item.onCheckedChange,
+          )
         }
       }
-      item {
-        PreferenceGroup(stringResource(Res.string.cloud_rules_group)) {
-          cloudRulesList.forEach { item ->
-            switch(
-              title = item.title,
-              summary = item.summary,
-              checked = item.checked,
-              onCheckedChange = item.onCheckedChange,
-            )
-          }
+      preferenceLazyGroup(cloudRulesGroupTitle) {
+        cloudRulesList.forEach { item ->
+          switch(
+            title = item.title,
+            summary = item.summary,
+            checked = item.checked,
+            onCheckedChange = item.onCheckedChange,
+          )
         }
       }
-      item {
-        PreferenceGroup(stringResource(Res.string.exceptional_rules_group)) {
-          exceptionalRulesList.forEach { item ->
-            switch(
-              title = item.title,
-              summary = item.summary,
-              checked = item.checked,
-              onCheckedChange = item.onCheckedChange,
-            )
-          }
+      preferenceLazyGroup(exceptionalRulesGroupTitle) {
+        exceptionalRulesList.forEach { item ->
+          switch(
+            title = item.title,
+            summary = item.summary,
+            checked = item.checked,
+            onCheckedChange = item.onCheckedChange,
+          )
         }
       }
       item { Spacer(Modifier.height(8.dp)) }

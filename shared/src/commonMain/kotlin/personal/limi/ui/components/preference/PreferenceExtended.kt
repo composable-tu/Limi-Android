@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 // --- 扩展函数，方便在 DSL 中使用 ---
 
 // 1. 普通点击项 / 导航项
-fun PreferenceScope.navigation(
+fun PreferenceLazyScope.navigation(
   title: String,
   summary: String? = null,
   icon: ImageVector? = null,
@@ -66,7 +66,7 @@ fun PreferenceScope.navigation(
 }
 
 // 2. 开关 (Switch)
-fun PreferenceScope.switch(
+fun PreferenceLazyScope.switch(
   title: String,
   checked: Boolean,
   onCheckedChange: (Boolean) -> Unit,
@@ -95,7 +95,7 @@ fun PreferenceScope.switch(
 
 // 3. 带输入框 (TextField)
 // Android 16 风格中，输入框往往是点击后弹窗，或者直接嵌入在 Cell 中 (较少见)。
-fun PreferenceScope.input(
+fun PreferenceLazyScope.input(
   title: String,
   value: String,
   onValueChange: (String) -> Unit,
@@ -146,7 +146,7 @@ fun PreferenceScope.input(
 
 // 4. Slider Cell (音量/亮度风格)
 // 在 M3 Expressive 中，Slider 常常是粗壮的药丸形状，这里模拟包含 Slider 的卡片。
-fun PreferenceScope.slider(
+fun PreferenceLazyScope.slider(
   title: String,
   value: Float,
   onValueChange: (Float) -> Unit,

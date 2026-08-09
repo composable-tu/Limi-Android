@@ -1,6 +1,7 @@
 package personal.limi.ui.screen.oss
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -46,6 +48,8 @@ import androidx.compose.ui.unit.sp
 import com.mikepenz.aboutlibraries.Libs
 import dev.vicart.compose.material.symbols.MaterialSymbols
 import dev.vicart.compose.material.symbols.OutlinedSymbol
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import limi.shared.generated.resources.Res
 import limi.shared.generated.resources.back
 import limi.shared.generated.resources.open_source_license
@@ -62,8 +66,11 @@ import personal.limi.utils.openUrl
 fun OSSLicense(uniqueId: String, finish: () -> Unit) {
   var libraries by remember { mutableStateOf<Libs?>(null) }
   LaunchedEffect(Unit) {
-    val json = Res.readBytes("files/aboutlibraries.json").decodeToString()
-    libraries = Libs.Builder().withJson(json).build()
+    libraries =
+      withContext(Dispatchers.Default) {
+        val json = Res.readBytes("files/aboutlibraries.json").decodeToString()
+        Libs.Builder().withJson(json).build()
+      }
   }
   val library by
     remember(libraries) {
@@ -77,8 +84,8 @@ fun OSSLicense(uniqueId: String, finish: () -> Unit) {
   val context = LocalContext.current
 
   if (libraries != null && library == null) {
-    finish()
-    return
+    // 数据已加载完成但仍未找到对应库，延迟退出避免在 composition 期间直接 finish
+    LaunchedEffect(Unit) { finish() }
   }
 
   Scaffold(
@@ -104,7 +111,16 @@ fun OSSLicense(uniqueId: String, finish: () -> Unit) {
       )
     },
   ) { innerPadding ->
-    library?.let {
+    val lib = library
+    if (lib == null) {
+      // 加载中（或即将退出）：显示 loading 占位，避免白屏
+      Box(
+        modifier = Modifier.fillMaxSize().padding(innerPadding),
+        contentAlignment = Alignment.Center,
+      ) {
+        CircularProgressIndicator()
+      }
+    } else {
       LazyColumn(
         state = listState,
         modifier =
@@ -120,7 +136,7 @@ fun OSSLicense(uniqueId: String, finish: () -> Unit) {
         item {
           val url =
             when {
-              library!!.website != null -> library!!.website.toString()
+              lib.website != null -> lib.website.toString()
               else -> ""
             }
           if (url.isNotEmpty())
@@ -159,9 +175,8 @@ fun OSSLicense(uniqueId: String, finish: () -> Unit) {
         item {
           val url =
             when {
-              library!!.scm?.url != null &&
-                library!!.scm?.url.toString() != library!!.website.toString() ->
-                library!!.scm?.url.toString()
+              lib.scm?.url != null && lib.scm?.url.toString() != lib.website.toString() ->
+                lib.scm?.url.toString()
               else -> ""
             }
           if (url.isNotEmpty())
@@ -197,7 +212,7 @@ fun OSSLicense(uniqueId: String, finish: () -> Unit) {
               }
             }
         }
-        library!!.licenses.forEach { license ->
+        lib.licenses.forEach { license ->
           item {
             if (!license.licenseContent.isNullOrEmpty())
               SelectionContainer {
