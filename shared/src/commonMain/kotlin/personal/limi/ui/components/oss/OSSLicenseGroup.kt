@@ -87,6 +87,9 @@ fun LazyListScope.ossLazyGroup(
   val size = scope.items.size
   if (size == 0) return
 
+  // 分组顶部留白，与旧 Column 的 vertical padding 对齐
+  item { Spacer(modifier = Modifier.height(GroupVerticalPadding)) }
+
   if (title != null) {
     item {
       Text(
@@ -97,7 +100,6 @@ fun LazyListScope.ossLazyGroup(
           Modifier.fillMaxWidth()
             .padding(
               start = GroupHorizontalPadding + TitleStartPadding,
-              top = GroupVerticalPadding,
               bottom = TitleBottomPadding,
             ),
       )
@@ -106,13 +108,7 @@ fun LazyListScope.ossLazyGroup(
 
   scope.items.forEachIndexed { index, itemContent ->
     item {
-      Box(
-        modifier =
-          Modifier.padding(
-            horizontal = GroupHorizontalPadding,
-            vertical = if (index == 0 && title == null) GroupVerticalPadding else 0.dp,
-          )
-      ) {
+      Box(modifier = Modifier.padding(horizontal = GroupHorizontalPadding)) {
         itemContent(getShapeForPosition(positionFor(index, size)))
       }
     }
